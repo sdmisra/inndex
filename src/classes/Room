@@ -1,7 +1,6 @@
 class Room {
   constructor(roomData) {
+    console.log('The details!', roomData)
   }
 }
-
-
-// export default Room;
+export default Room;

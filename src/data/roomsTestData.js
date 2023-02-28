@@ -1,4 +1,4 @@
-const testRoom = {
+const testRoomData = {
   'number': 1,
   'roomType': 'residential suite',
    'bidet': true,
@@ -8,4 +8,4 @@ const testRoom = {
   }
   
 
-  export default testRoom;
+  export default testRoomData;

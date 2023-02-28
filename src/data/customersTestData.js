@@ -1,8 +1,8 @@
-testCustomer = [
+const testCustomers = [
   {
   "id": 1,
   "name": "Leatha Ulrich"
   }
 ]
 
-export default testCustomer;
+export default testCustomers;
