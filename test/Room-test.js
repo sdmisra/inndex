@@ -4,9 +4,10 @@ import Room from '../src/classes/Room';
 const expect = chai.expect;
 
 describe('Room tests are running', function() {
-
+  
   it('should return true', function() {
     const testRoom = new Room(testRoomData)
     expect(true).to.equal(true);
-  });
+  })
+  ;
 });
