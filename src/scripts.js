@@ -1,11 +1,13 @@
 import './css/styles.css';
 import './images/turing-logo.png'
 import fetchData from '/dist/apiCalls'
-console.log('This is the JavaScript entry file - your code begins here.');
-
 // Promise retrieval:
-Promise.all([fetchData('customers'), fetchData('customer'), fetchData('roomData'), fetchData('bookings')])
-  .then((responsesArray)=> {
-    console.log(responsesArray);
-    return responsesArray
+let customersData, roomsData, bookingsData;
+Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
+  .then((hotelArray)=> {
+    customersData = hotelArray[0];
+    roomsData = hotelArray[1];
+    bookingsData = hotelArray[2];
+    hotelArray.forEach(hotelAspect => console.log(hotelAspect))
+    return hotelArray
   })
