@@ -1,0 +1,7 @@
+class Room {
+  constructor(roomData) {
+  }
+}
+
+
+// export default Room;

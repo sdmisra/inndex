@@ -1,6 +1,7 @@
 import './css/styles.css';
 import './images/turing-logo.png'
 import fetchData from '/dist/apiCalls'
+import testRoom from './data/roomsTestData';
 // Promise retrieval:
 let customersData, roomsData, bookingsData;
 Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
@@ -11,3 +12,5 @@ Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
     hotelArray.forEach(hotelAspect => console.log(hotelAspect))
     return hotelArray
   })
+
+  console.log('this is the test room object:', testRoom[0])
