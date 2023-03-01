@@ -1,13 +1,13 @@
 class Room {
   constructor(roomData) {
-    console.log('The details!', roomData)
-    this.number = roomData.number;
+    console.log('roomData', roomData)
+    this.number = roomData['number'];
     this.roomType = roomData.roomType;
     this.bidet = roomData.bidet;
     this.bedSize = roomData.bedSize;
     this.numBeds = roomData.numBeds;
     this.costPerNight = roomData.costPerNight;
-    console.log('did I get them deets?:', this)
+    console.log('room made:', this)
   }
 }
 export default Room;
