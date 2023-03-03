@@ -7,7 +7,7 @@
   <title>Webpack Starter Kit</title>
 </head>
 <body>
-  <p id="loginWindow" class="welcome-page">
+  <p id="loginWindow hidden" class="welcome-page">
   <label for="login-here"> Username
     <input type="text" id ="loginName" name="login-here">
   </label>
@@ -17,7 +17,7 @@
   </label>
   </p>
   <main>
-    <label for="bookingInput">Check the date!
+    <label id="bookingLabel" for="bookingInput" class = "">Check the date!
       <input type="date" id="bookingInput" name="book-a-room" value="2022-04-22" min="2022-01-01" max="2023-12-31">
       <span>
         <button id="bookingBtn">Look for open rooms</button>
@@ -29,9 +29,9 @@
       <div class ="main-view hidden" id="filteredMainView"></div>
     </section>
     <br>
-    <span class ="test-information">User Info Below</span>
+    <span class ="user-nav "id ="userInfo">User Info Below</span>
     <p class = "reward-text" id="rewardsText"></p>
-    <section class ="browser-box" id="savedBookingsBrowser">
+    <section class ="browser-box " id="savedBookingsBrowser">
       <div class ="saved-view" id="defaultSavedView"></div>
       <div class ="saved-view hidden" id="filteredSavedView"></div>
     </section>

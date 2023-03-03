@@ -38,12 +38,15 @@ Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
   // Current iteration is using loginCustomer() below on ~ln 60
 
   // Document Selectors //
+  const loginView = document.querySelector('#loginWindow')
 
+  const bookRoomLabel = document.querySelector('#bookingLabel')
   const bookRoomInput = document.querySelector('#bookingInput')
   const bookRoomBtn = document.querySelector('#bookingBtn')
 
   const userNameInput = document.querySelector('#loginName')
   const userPassInput = document.querySelector('#loginPass')
+  const userNav = document.querySelector('#userInfo')
 
   const mainBucket = document.querySelector('#mainBookingsBrowser')
   const savedBucket = document.querySelector('#savedBookingsBrowser')
@@ -61,33 +64,43 @@ bookRoomBtn.addEventListener('click', (event)=> {
 userNameInput.addEventListener('change', () => {
   loginCustomer();
 })
+// window.addEventListener('load', () => {
+
+// })
   // Event Handlers // 
   function checkThisDate () {
     let reformatClick = bookRoomInput.value.replaceAll('-', '/')
     let bookedRoomNumbers = hotelData.bookings.filter(booking=> booking.date === reformatClick).map(booking => booking.roomNumber)
-    // console.log(bookedRoomNumbers)
     availableRooms = hotelData.rooms.filter(room => !bookedRoomNumbers.includes(room.number))
-    console.log(`These rooms are available for ${reformatClick}`,availableRooms)
+    console.log(`75: These rooms are available for ${reformatClick}`,availableRooms)
     renderRooms(availableRooms, defaultMainView);
-    // availableRooms.forEach(room => mainBucket.innerText += room)
-    // Display available rooms in the top section of the page, where a user is browsing their current options.
+
   }
 
   function loginCustomer() {
     rewardsWords.innerText = ''
-    // savedBucket.innerText = ''
     let idNum = Number(userNameInput.value.split('customer')[1])
-    let testCustomer = hotelData.customers.find(customer => customer.id === idNum)
-    console.log(testCustomer)
-    // Display customers total amount spent using testCustomer.rewardsPoints
-    rewardsWords.innerText = `You have ${testCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty.`
-    let myRooms = testCustomer.bookings.map(booking=>booking.roomDetails);
+    let thisCustomer = hotelData.customers.find(customer => customer.id === idNum)
+    console.log('84', thisCustomer)
+    rewardsWords.innerText = `Welcome back ${thisCustomer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty.`
+    let myRooms = thisCustomer.bookings.map(booking=>booking.roomDetails);
     renderRooms(myRooms, defaultSavedView)
+    hide([loginView])
+    show([mainBucket, savedBucket, bookRoomLabel, userNav])
   }
   function renderRooms(array, element) {
     element.innerHTML = ""
     array.forEach(item => {
-      element.innerHTML += `<div class="room-card">${item}</div>`
+      element.innerHTML += `
+      <div class="room-card">
+        <span class="room-card-detail">Room ${item.number}</span>
+        <span class="room-card-detail">🛌${item.bedSize}</span>
+        <span class="room-card-detail">⛲️${item.bidet}</span>
+        <span class="room-card-detail">💰${item.costPerNight}</span>
+        <span class="room-card-detail">Beds: ${item.numBeds}</span>
+        <span class="room-card-detail">Style: ${item.roomType}</span>
+      </div>
+      `
     })
   }
   
@@ -103,3 +116,13 @@ userNameInput.addEventListener('change', () => {
   // function bookDate(currentUserId) {
     // This is intended to be the function that actually triggers the fetch / POST request that adds a new booking to our API endpoint.
   // }
+
+  function show(array){
+    const showElements = array.map(element => element.classList.remove('hidden'));
+    return showElements;
+  }
+    
+  function hide(array) {
+    const hideElements = array.map(element => element.classList.add('hidden'));
+    return hideElements;
+  }
