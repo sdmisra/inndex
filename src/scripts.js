@@ -35,3 +35,40 @@ Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
   })
 
   // With this promise set up, I should be able to log in as a customer and then use the hotelData global variable in order to look up their login attempt and assign them the user info that is being properly instantiated in this second part of our fetch.
+
+  // Document Selectors //
+  const bookRoomInput = document.querySelector('#bookingInput')
+  const bookRoomBtn = document.querySelector('#bookingBtn')
+  const userNameInput = document.querySelector('#loginName')
+  const userPassInput = document.querySelector('#loginPass')
+  // Event Listeners // 
+bookRoomBtn.addEventListener('click', (event)=> {
+  checkThisDate(event)
+})
+userNameInput.addEventListener('change', () => {
+  loginCustomer();
+})
+  // Event Handlers // 
+  function checkThisDate () {
+    let reformatClick = bookRoomInput.value.replaceAll('-', '/')
+    let bookedRoomNumbers = hotelData.bookings.filter(booking=> booking.date === reformatClick).map(booking => booking.roomNumber)
+    // console.log(bookedRoomNumbers)
+    let availableRooms = hotelData.rooms.filter(room => !bookedRoomNumbers.includes(room.number))
+    console.log(`These rooms are available for ${reformatClick}`,availableRooms)
+    // Display available rooms in the top section of the page, where a user is browsing their current options.
+  }
+
+  function loginCustomer() {
+    let idNum = Number(userNameInput.value.split('customer')[1])
+    let testCustomer = hotelData.customers.find(customer => customer.id === idNum)
+    console.log(testCustomer)
+    // Display customers current and past bookings using testCustomer.bookings
+    // Display customers total amount spent using testCustomer.rewardsPoints
+  }
+  function displayRooms(array, destination) {
+
+  }
+  // function bookDate(currentUserId) {
+
+  // }
+

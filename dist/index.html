@@ -7,7 +7,30 @@
   <title>Webpack Starter Kit</title>
 </head>
 <body>
-  <img src="./images/turing-logo.png" alt="turing logo">
+  <main>
+    <label for="bookingInput">Check the date!
+      <input type="date" id="bookingInput" name="book-a-room" value="2022-04-22" min="2022-01-01" max="2023-12-31">
+      <span>
+        <button id="bookingBtn">Look for valid rooms</button>
+      </span>
+    </label>
+    <section class = "browser-box" id="mainBookingsBrowser">
+      <div class ="full-size-view" id="defaultMainView"></div>
+      <div class ="full-size-view" id="filteredMainView"></div>
+    </section>
+    <br>
+    <label for="login-here"> Username
+      <input type="text" id ="loginName" name="login-here">
+    </label>
+    <br>
+    <label for="pass-here"> Password
+      <input type="text" id ="loginPass" name ="pass-here">
+    </label>
+    <section class = "browser-box" id="savedBookingsBrowser">
+      <div class ="small-size-view" id="defaultSavedView"></div>
+      <div class ="small-size-view" id="filteredSavedView"></div>
+    </section>
+  </main>
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
   <script src="bundle.js"></script>
 </body>
