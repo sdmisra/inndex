@@ -15,14 +15,14 @@ main {
 }
 .browser-box {
   display: flex;
-  height: 500px;
-  width: 1000px;
+  height: 600px;
+  width: 1200px;
   border: black 3px dotted;
 }
 .main-view {
   display: flex;
-  height: 500px;
-  width: 1000px;
+  height: 600px;
+  width: 1200px;
   border: white 2px solid;
   flex-wrap: wrap;
   align-content: space-around;
@@ -31,17 +31,18 @@ main {
 }
 .saved-view {
   display: flex;
-  height: 500px;
-  width: 1000px;
+  height: 600px;
+  width: 1200px;
   border: white 1px solid;
   flex-wrap: wrap;
   align-content: space-around;
+  justify-content: space-evenly;
 }
 .room-card {
   display: flex;
   flex-direction: column;
-  height: 125px;
-  width: 90px;
+  height: 200px;
+  width: 125px;
   border: white 1px solid;
   font-size:small;
   justify-content: center;
