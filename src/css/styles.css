@@ -1,3 +1,40 @@
 body {
   background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
 }
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin:auto;
+}
+.browser-box {
+  display: flex;
+  height: 200px;
+  width: 500px;
+  border: black 3px dotted;
+}
+.main-view {
+  display: flex;
+  height: 200px;
+  width: 500px;
+  border: white 2px solid;
+  flex-wrap: wrap;
+}
+.saved-view {
+  display: flex;
+  height: 200px;
+  width: 500px;
+  border: white 1px solid;
+  flex-wrap: wrap;
+}
+.room-card {
+  display: flex;
+  height: 25px;
+  width: 50px;
+  border: white 1px solid;
+  margin: 5px;
+}
+
+.hidden {
+  display:none;
+}
