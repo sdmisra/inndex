@@ -6,8 +6,10 @@ import Booking from './classes/Booking'
 import Customer from './classes/Customer';
 import Hotel from './classes/Hotel';
 // Promise retrieval:
-let hotelData, availableRooms;
-Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
+let hotelData, availableRooms, reformatClick, thisCustomer, currentBooking, saveNumber, saveId;
+
+function refreshData () {
+   Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
   .then((data)=> {
     let apiData = {
       customers: data[0].customers,
@@ -33,7 +35,8 @@ Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
     console.log('All Hotel Data:', hotelData)
     return hotelData
   })
-
+}
+  refreshData();
   // With this promise set up, I should be able to log in as a customer and then use the hotelData global variable in order to look up their login attempt and assign them the user info that is being properly instantiated in this second part of our fetch.
   // Current iteration is using loginCustomer() below on ~ln 60
 
@@ -58,29 +61,31 @@ Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
 
   const rewardsWords = document.querySelector('#rewardsText')
   // Event Listeners // 
+
+  // window.addEventListener('load', () => {
+    // })
 bookRoomBtn.addEventListener('click', (event)=> {
   checkThisDate(event)
 })
 userNameInput.addEventListener('change', () => {
   loginCustomer();
 })
-// window.addEventListener('load', () => {
-
-// })
+mainBucket.addEventListener('click', (event) => {
+  bookRoom(event, hotelData);
+})
   // Event Handlers // 
   function checkThisDate () {
-    let reformatClick = bookRoomInput.value.replaceAll('-', '/')
+    reformatClick = bookRoomInput.value.replaceAll('-', '/')
     let bookedRoomNumbers = hotelData.bookings.filter(booking=> booking.date === reformatClick).map(booking => booking.roomNumber)
     availableRooms = hotelData.rooms.filter(room => !bookedRoomNumbers.includes(room.number))
     console.log(`75: These rooms are available for ${reformatClick}`,availableRooms)
     renderRooms(availableRooms, defaultMainView);
-
   }
 
   function loginCustomer() {
     rewardsWords.innerText = ''
     let idNum = Number(userNameInput.value.split('customer')[1])
-    let thisCustomer = hotelData.customers.find(customer => customer.id === idNum)
+    thisCustomer = hotelData.customers.find(customer => customer.id === idNum)
     console.log('84', thisCustomer)
     rewardsWords.innerText = `Welcome back ${thisCustomer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty.`
     let myRooms = thisCustomer.bookings.map(booking=>booking.roomDetails);
@@ -92,18 +97,28 @@ userNameInput.addEventListener('change', () => {
     element.innerHTML = ""
     array.forEach(item => {
       element.innerHTML += `
-      <div class="room-card">
-        <span class="room-card-detail">Room ${item.number}</span>
-        <span class="room-card-detail">🛌${item.bedSize}</span>
-        <span class="room-card-detail">⛲️${item.bidet}</span>
-        <span class="room-card-detail">💰${item.costPerNight}</span>
-        <span class="room-card-detail">Beds: ${item.numBeds}</span>
-        <span class="room-card-detail">Style: ${item.roomType}</span>
+      <div class="room-card" id ="${item.number}">
+        <span class="room-card-detail" id ="${item.number}">Room #${item.number}</span>
+        <span class="room-card-detail" id ="${item.number}">🛌${item.bedSize}</span>
+        <span class="room-card-detail" id ="${item.number}">⛲️${item.bidet}</span>
+        <span class="room-card-detail" id ="${item.number}">💰${item.costPerNight}</span>
+        <span class="room-card-detail" id ="${item.number}">Beds: ${item.numBeds}</span>
+        <span class="room-card-detail" id ="${item.number}">Style: ${item.roomType}</span>
       </div>
       `
     })
   }
-  
+  function bookRoom(click, hotel) {
+    saveNumber = click.target.id;
+    saveId = thisCustomer.id
+    console.log(saveNumber);
+    console.log(thisCustomer)
+    currentBooking = {"userID": `${saveId}`, "date": `${reformatClick}`, "roomNumber": `${saveNumber}`}
+    postRoomBooking(currentBooking)
+    refreshData();
+    checkThisDate();
+    loginCustomer();
+  }
   // function filterRooms(roomsArray, filterValue) {
   //   let filtered = roomsArray.filter(room => room.roomType === filterValue)
   //   renderRooms(filtered, mainBucket)
@@ -125,4 +140,24 @@ userNameInput.addEventListener('change', () => {
   function hide(array) {
     const hideElements = array.map(element => element.classList.add('hidden'));
     return hideElements;
+  }
+
+  function postRoomBooking(bookingObject) {
+    bookingObject['roomNumber'] = parseInt(bookingObject.roomNumber)
+    bookingObject['userID'] = parseInt(bookingObject.userID)
+    console.log(bookingObject);
+    fetch('http://localhost:3001/api/v1/bookings', {
+      method: 'POST',
+      body: JSON.stringify(bookingObject),
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(response => {
+      if (!response.ok) {
+        console.log(response.json());
+        throw new Error(response.message);
+      }
+      return response.json()
+    })
+    .then(json => console.log(json))
+    .catch(error => console.log('Caught error:', error));
   }
