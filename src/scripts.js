@@ -6,7 +6,7 @@ import Booking from './classes/Booking'
 import Customer from './classes/Customer';
 import Hotel from './classes/Hotel';
 // Promise retrieval:
-let hotelData, availableRooms, reformatClick, thisCustomer, currentBooking, saveNumber, saveId;
+let hotelData, availableRooms, reformatDate, thisCustomer, currentBooking, saveNumber, saveId, bookedRoomNumbers;
 
 function refreshData () {
    Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
@@ -32,20 +32,20 @@ function refreshData () {
       return thisBooking;
     })
     hotelData.rooms = hotelData.rooms.map(room => new Room(room));
-    console.log('All Hotel Data:', hotelData)
+    console.log(hotelData)
     return hotelData
   })
 }
-  refreshData();
-  // With this promise set up, I should be able to log in as a customer and then use the hotelData global variable in order to look up their login attempt and assign them the user info that is being properly instantiated in this second part of our fetch.
-  // Current iteration is using loginCustomer() below on ~ln 60
+refreshData();
 
   // Document Selectors //
   const loginView = document.querySelector('#loginWindow')
 
   const bookRoomLabel = document.querySelector('#bookingLabel')
   const bookRoomInput = document.querySelector('#bookingInput')
+  const roomTypeInput = document.querySelector('#roomTypeInput')
   const bookRoomBtn = document.querySelector('#bookingBtn')
+  const radioBtns = document.querySelectorAll('.radio-room-button')
 
   const userNameInput = document.querySelector('#loginName')
   const userPassInput = document.querySelector('#loginPass')
@@ -62,15 +62,20 @@ function refreshData () {
   const rewardsWords = document.querySelector('#rewardsText')
   // Event Listeners // 
 
-  window.addEventListener('load', () => {
+window.addEventListener('load', () => {
     show([loginView])
     hide([fullPageView])
     })
 bookRoomBtn.addEventListener('click', (event)=> {
-  checkThisDate(event)
+  let roomFilter;
+  for (let radioButton of radioBtns) {
+    const checkedButton = radioButton.checked;
+    checkedButton ? roomFilter = radioButton.id : null
+  }
+  checkThisDate(roomFilter)
 })
 userNameInput.addEventListener('change', () => {
-  loginCustomer();
+  renderCustomer();
   hide([loginView])
   show([fullPageView])
 })
@@ -78,15 +83,20 @@ mainBucket.addEventListener('click', (event) => {
   bookRoom(event, hotelData);
 })
   // Event Handlers // 
-  function checkThisDate () {
-    reformatClick = bookRoomInput.value.replaceAll('-', '/')
-    let bookedRoomNumbers = hotelData.bookings.filter(booking=> booking.date === reformatClick).map(booking => booking.roomNumber)
-    availableRooms = hotelData.rooms.filter(room => !bookedRoomNumbers.includes(room.number))
-    console.log(`75: These rooms are available for ${reformatClick}`,availableRooms)
+  function checkThisDate (filter) {
+    reformatDate = bookRoomInput.value.replaceAll('-', '/')
+    console.log('trying to filter by:', filter)
+    // let roomSelection = roomTypeInput.value
+    bookedRoomNumbers = hotelData.bookings.filter(booking=> booking.date === reformatDate).map(booking => booking.roomNumber)
+    availableRooms = hotelData.rooms.filter(room => !bookedRoomNumbers.includes(room.number) && room.roomType == filter)
+    if (!availableRooms.length) {
+      alert('There are no available rooms for that date and room type! Please choose a different room type or date to keep browsing.')
+    }
+    console.log(`75: These rooms are available for ${reformatDate}`,availableRooms)
     renderRooms(availableRooms, defaultMainView);
   }
 
-  function loginCustomer() {
+  function renderCustomer() {
     rewardsWords.innerText = ''
     let idNum = Number(userNameInput.value.split('customer')[1])
     thisCustomer = hotelData.customers.find(customer => customer.id === idNum)
@@ -101,7 +111,7 @@ mainBucket.addEventListener('click', (event) => {
     element.innerHTML = ""
     array.forEach(item => {
       element.innerHTML += `
-      <div class="room-card" id ="${item.number}">
+      <div class="room-card" id ="${item.number}" aria-role="button">
         <span class="room-card-detail" id ="${item.number}">Room #${item.number}</span>
         <span class="room-card-detail" id ="${item.number}">🛌${item.bedSize}</span>
         <span class="room-card-detail" id ="${item.number}">⛲️${item.bidet}</span>
@@ -114,14 +124,21 @@ mainBucket.addEventListener('click', (event) => {
   }
   function bookRoom(click, hotel) {
     saveNumber = click.target.id;
-    saveId = thisCustomer.id
-    console.log(saveNumber);
-    console.log(thisCustomer)
-    currentBooking = {"userID": `${saveId}`, "date": `${reformatClick}`, "roomNumber": `${saveNumber}`}
-    postRoomBooking(currentBooking)
-    refreshData();
-    checkThisDate();
-    loginCustomer();
+    saveId = thisCustomer.id;
+    console.log(saveNumber)
+    // console.log(saveNumber);
+    // console.log(thisCustomer);
+    currentBooking = {"userID": `${saveId}`, "date": `${reformatDate}`, "roomNumber": `${saveNumber}`}
+    setTimeout(()=>{
+      postRoomBooking(currentBooking);
+      // alert(`Room booked! You have successfully booked Room ${saveNumber} on ${reformatDate}`)
+    }, 350)
+    setTimeout(()=> {
+      refreshData();
+      checkThisDate();
+    }, 250)
+    renderCustomer();
+    renderRooms(availableRooms, defaultMainView);
   }
   // function filterRooms(roomsArray, filterValue) {
   //   let filtered = roomsArray.filter(room => room.roomType === filterValue)

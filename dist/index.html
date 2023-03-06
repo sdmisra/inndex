@@ -17,12 +17,23 @@
   </label>
   </p>
   <main id="full-page-view">
-    <label id="bookingLabel" for="bookingInput" class = "">Check the date!
+    <label id="bookingLabel" for="bookingInput" class = "">Choose the day and room type!
       <input type="date" id="bookingInput" name="book-a-room" value="2022-04-22" min="2022-01-01" max="2023-12-31">
+      <div class = "radio-buttons">
+        <input class="radio-room-button" type="radio" id = "junior suite" name="room-type">
+        <label for="junior" class ="radio-room-label">Junior Suites</label>
+        <input class="radio-room-button" type="radio" id = "single room" name="room-type">
+        <label for="single" class ="radio-room-label">Single Rooms</label>
+        <input class="radio-room-button" type="radio" id = "suite" name="room-type">
+        <label for="suite" class ="radio-room-label">Suites</label>
+        <input class="radio-room-button" type="radio" id = "residential suite" name="room-type">
+        <label for="residentialSuite" class ="radio-room-label">Residential Suites</label>
+      </div>
+    </label>
+
       <span>
         <button id="bookingBtn">Look for open rooms</button>
       </span>
-    </label>
     <section class ="browser-box" id="mainBookingsBrowser">
       <div class ="main-view" id="defaultMainView">
       </div>

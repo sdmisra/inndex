@@ -4,7 +4,7 @@ html {
 }
 
 body {
-  background: conic-gradient( rgb(57 33 5 / 84%) 0%,rgb(39 71 8 / 80%) 100%);
+  background: conic-gradient( rgba(57, 33, 5, 0.84) 0%,rgb(39 71 8 / 80%) 100%);
   height:auto;
   width: auto;
 }
@@ -14,14 +14,44 @@ main {
   align-items: center;
   padding: 2px;
 }
+
 .browser-box {
   display: flex;
+  overflow: scroll;
   height: 800px;
   width: 1200px;
-  border:rgb(219 182 46 / 82%) 6px solid;
-  border-radius: 4px;
-  background-color:rgb(56 41 21 / 81%)
+  border:rgba(217, 190, 93, 0.953) 6px solid;
+  border-radius: 2px;
+  background-color:rgb(56 41 21 / 81%);
+  box-shadow: 0px 0px 5px 6px rgb(245, 245, 245);
 }
+
+ /* Scroll Bar Styling */
+::-webkit-scrollbar {
+  width: 15px;
+  background:rgba(57, 33, 5, 0.84)
+ }
+::-webkit-scrollbar-corner {
+  width: 20px;
+  background: rgb(215, 197, 131);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-track {
+  background:  rgba(57, 33, 5, 0.84);
+  border-radius: 4px; 
+ }
+
+::-webkit-scrollbar-thumb {
+  background: goldenrod;
+  border-radius: 4px;
+ }
+
+ ::-webkit-scrollbar-thumb:hover {
+   background:rgba(217, 190, 93, 0.953);
+   border: rgb(149, 114, 27);
+   cursor: pointer;
+ }
+
 .main-view {
   display: flex;
   height: 800px;
@@ -32,15 +62,19 @@ main {
   margin: 3px;
   border-radius: 4px;
 }
+label {
+  cursor: pointer;
+  padding: 8px;
+}
 .saved-view {
   display: flex;
   height: 800px;
   width: 1200px;
-  border: white 1px solid;
   flex-wrap: wrap;
   align-content: space-around;
   justify-content: space-evenly;
 }
+
 .room-card {
   display: flex;
   flex-direction: column;
@@ -59,17 +93,16 @@ main {
   border: goldenrod 1px solid;
   cursor: pointer;
 }
-/* 
-.room-card-detail {
 
-} */
 
 .welcome-page {
   display: flex;
+  position: absolute;
   flex-direction: column;
   align-items: center;
   height: 95%;
   width: 95%;
+  top: 250px;
 }
 
 .hidden {
