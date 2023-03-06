@@ -53,7 +53,7 @@ function refreshData () {
 
   const mainBucket = document.querySelector('#mainBookingsBrowser')
   const savedBucket = document.querySelector('#savedBookingsBrowser')
-
+  const fullPageView = document.querySelector('#full-page-view')
   const defaultMainView = document.querySelector('#defaultMainView')
   const filteredMainView = document.querySelector('#filteredMainView')
   const defaultSavedView = document.querySelector('#defaultSavedView')
@@ -62,13 +62,17 @@ function refreshData () {
   const rewardsWords = document.querySelector('#rewardsText')
   // Event Listeners // 
 
-  // window.addEventListener('load', () => {
-    // })
+  window.addEventListener('load', () => {
+    show([loginView])
+    hide([fullPageView])
+    })
 bookRoomBtn.addEventListener('click', (event)=> {
   checkThisDate(event)
 })
 userNameInput.addEventListener('change', () => {
   loginCustomer();
+  hide([loginView])
+  show([fullPageView])
 })
 mainBucket.addEventListener('click', (event) => {
   bookRoom(event, hotelData);
