@@ -59,7 +59,9 @@ bookRoomBtn.addEventListener('click', (event)=> {
   checkThisDate(roomFilter);
 })
 userBrowseButton.addEventListener('click', ()=> {
-  toggleElements([browserView, bookRoomBtn]);
+  resetFilter();
+  checkThisDate(roomFilter);
+  toggleElements([browserView, bookRoomBtn, mainBucket]);
 })
 userNameInput.addEventListener('keypress', (event) => {
   if (event.keyCode == 13) {
@@ -159,7 +161,7 @@ userLogIn.addEventListener('click', ()=> {
   function denyBooking(date) {
     toggleElements([announceWords])
     hideElements([mainBucket])
-    announceWords.innerText = `Unfortunately, there are no available rooms for those search parameters for the selected date (${date.replaceAll('/', '-')}). Please select 'All Rooms' to see all available suites for current date.`
+    announceWords.innerText = `Unfortunately, there are no available rooms for those search parameters for the selected date (${date.replaceAll('/', '-')}). Please select 'All Rooms' to see all available options for selected date.`
   }
 
   function toggleElements(array) {
