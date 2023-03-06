@@ -8,9 +8,21 @@ class Hotel {
     this.rooms = hotelData.rooms
     this.bookings = hotelData.bookings
   }
-  retrieveManagerInfo() {
-    // This function might allow the Hotel class to initialize all three arrays into arrays filled with instances of their respective classes. This will prevent redundancy in class creation that happens with each step of the Customer's track of experience.
+  retrieveHotelInfo(hotelData) {
+    this.customers = hotelData.customers.map(customer => {
+      let thisCust = new Customer(customer)
+      thisCust.retrieveMyBookings(hotelData.bookings, hotelData.rooms)
+      thisCust.calcTotalCost()
+      return thisCust
+    })
+    this.bookings = hotelData.bookings.map(booking => {
+      let thisBooking = new Booking(booking);
+      thisBooking.retrieveRoomInfo(hotelData.rooms);
+      return thisBooking
+    })
+    this.rooms = hotelData.rooms.map(room => new Room(room));
   }
+
 }
 
 export default Hotel;

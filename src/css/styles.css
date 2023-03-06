@@ -18,8 +18,8 @@ main {
 .browser-box {
   display: flex;
   overflow: scroll;
-  height: 800px;
-  width: 1200px;
+  height: auto;
+  width: auto;
   border:rgba(217, 190, 93, 0.953) 6px solid;
   border-radius: 2px;
   background-color:rgb(56 41 21 / 81%);
@@ -28,11 +28,11 @@ main {
 
  /* Scroll Bar Styling */
 ::-webkit-scrollbar {
-  width: 15px;
+  width: 12px;
   background:rgba(57, 33, 5, 0.84)
  }
 ::-webkit-scrollbar-corner {
-  width: 20px;
+  width: 18px;
   background: rgb(215, 197, 131);
   border-radius: 3px;
 }
@@ -54,8 +54,8 @@ main {
 
 .main-view {
   display: flex;
-  height: 800px;
-  width: 1200px;
+  height: auto;
+  width: auto;
   flex-wrap: wrap;
   align-content: space-around;
   justify-content: space-evenly;
@@ -68,8 +68,8 @@ label {
 }
 .saved-view {
   display: flex;
-  height: 800px;
-  width: 1200px;
+  height: auto;
+  width: auto;
   flex-wrap: wrap;
   align-content: space-around;
   justify-content: space-evenly;

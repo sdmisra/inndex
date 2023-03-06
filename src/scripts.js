@@ -20,19 +20,8 @@ function refreshData () {
   })
   .then(allHotelData => {
     hotelData = new Hotel(allHotelData);
-    hotelData.customers = hotelData.customers.map(customer => {
-      let thisCust = new Customer(customer)
-      thisCust.retrieveMyBookings(allHotelData.bookings, allHotelData.rooms)
-      thisCust.calcTotalCost()
-      return thisCust
-    })
-    hotelData.bookings = hotelData.bookings.map(booking=> {
-      let thisBooking = new Booking(booking)
-      thisBooking.retrieveRoomInfo(allHotelData.rooms);
-      return thisBooking;
-    })
-    hotelData.rooms = hotelData.rooms.map(room => new Room(room));
-    console.log(hotelData)
+    hotelData.retrieveHotelInfo(allHotelData);
+    console.log(hotelData);
     return hotelData
   })
 }
@@ -50,12 +39,14 @@ refreshData();
   const userNameInput = document.querySelector('#loginName')
   const userPassInput = document.querySelector('#loginPass')
   const userNav = document.querySelector('#userInfo')
+  const userToggleBookings = document.querySelector('#userBookingsBtn')
+  const userLogOut = document.querySelector('#userLogOutBtn')
+  const userLogIn = document.querySelector('#userLogInBtn')
 
   const mainBucket = document.querySelector('#mainBookingsBrowser')
   const savedBucket = document.querySelector('#savedBookingsBrowser')
   const fullPageView = document.querySelector('#full-page-view')
   const defaultMainView = document.querySelector('#defaultMainView')
-  const filteredMainView = document.querySelector('#filteredMainView')
   const defaultSavedView = document.querySelector('#defaultSavedView')
   const filteredSavedView = document.querySelector('#filteredSavedView')
 
@@ -63,36 +54,54 @@ refreshData();
   // Event Listeners // 
 
 window.addEventListener('load', () => {
-    show([loginView])
-    hide([fullPageView])
+    toggleElements([fullPageView])
     })
 bookRoomBtn.addEventListener('click', (event)=> {
-  let roomFilter;
+  let roomFilter = undefined;
   for (let radioButton of radioBtns) {
     const checkedButton = radioButton.checked;
     checkedButton ? roomFilter = radioButton.id : null
   }
   checkThisDate(roomFilter)
 })
-userNameInput.addEventListener('change', () => {
+userNameInput.addEventListener('keypress', (event) => {
+  if (event.keyCode == 13) {
   renderCustomer();
-  hide([loginView])
-  show([fullPageView])
+  toggleElements([loginView])
+  toggleElements([fullPageView])
+  }
 })
 mainBucket.addEventListener('click', (event) => {
   bookRoom(event, hotelData);
 })
+userToggleBookings.addEventListener('click', () => {
+  toggleElements([savedBucket])
+})
+
+userLogOut.addEventListener('click', () => {
+  thisCustomer = undefined;
+  toggleElements([loginView])
+  toggleElements([fullPageView])
+})
+userLogIn.addEventListener('click', ()=> {
+  renderCustomer();
+  toggleElements([loginView])
+  toggleElements([fullPageView])
+})
   // Event Handlers // 
   function checkThisDate (filter) {
     reformatDate = bookRoomInput.value.replaceAll('-', '/')
-    console.log('trying to filter by:', filter)
-    // let roomSelection = roomTypeInput.value
+    // 
     bookedRoomNumbers = hotelData.bookings.filter(booking=> booking.date === reformatDate).map(booking => booking.roomNumber)
-    availableRooms = hotelData.rooms.filter(room => !bookedRoomNumbers.includes(room.number) && room.roomType == filter)
+    if (filter) {
+      availableRooms = hotelData.rooms.filter(room => !bookedRoomNumbers.includes(room.number) && room.roomType == filter)
+    }
+    else {
+      availableRooms = hotelData.rooms.filter(room => !bookedRoomNumbers.includes(room.number))
+    }
     if (!availableRooms.length) {
       alert('There are no available rooms for that date and room type! Please choose a different room type or date to keep browsing.')
     }
-    console.log(`75: These rooms are available for ${reformatDate}`,availableRooms)
     renderRooms(availableRooms, defaultMainView);
   }
 
@@ -100,12 +109,11 @@ mainBucket.addEventListener('click', (event) => {
     rewardsWords.innerText = ''
     let idNum = Number(userNameInput.value.split('customer')[1])
     thisCustomer = hotelData.customers.find(customer => customer.id === idNum)
-    console.log('84', thisCustomer)
     rewardsWords.innerText = `Welcome back ${thisCustomer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty.`
-    let myRooms = thisCustomer.bookings.map(booking=>booking.roomDetails);
-    renderRooms(myRooms, defaultSavedView)
-    hide([loginView])
-    show([mainBucket, savedBucket, bookRoomLabel, userNav])
+    let customerRooms = thisCustomer.retrieveMyRooms();
+    renderRooms(customerRooms, defaultSavedView)
+    toggleElements([bookRoomLabel, userNav])
+
   }
   function renderRooms(array, element) {
     element.innerHTML = ""
@@ -122,23 +130,14 @@ mainBucket.addEventListener('click', (event) => {
       `
     })
   }
-  function bookRoom(click, hotel) {
+  function bookRoom(click) {
     saveNumber = click.target.id;
     saveId = thisCustomer.id;
-    console.log(saveNumber)
-    // console.log(saveNumber);
-    // console.log(thisCustomer);
+    console.log('clicked:', saveNumber)
     currentBooking = {"userID": `${saveId}`, "date": `${reformatDate}`, "roomNumber": `${saveNumber}`}
-    setTimeout(()=>{
-      postRoomBooking(currentBooking);
-      // alert(`Room booked! You have successfully booked Room ${saveNumber} on ${reformatDate}`)
-    }, 350)
-    setTimeout(()=> {
-      refreshData();
-      checkThisDate();
-    }, 250)
+    postRoomBooking(currentBooking);
+    checkThisDate();
     renderCustomer();
-    renderRooms(availableRooms, defaultMainView);
   }
   // function filterRooms(roomsArray, filterValue) {
   //   let filtered = roomsArray.filter(room => room.roomType === filterValue)
@@ -153,14 +152,19 @@ mainBucket.addEventListener('click', (event) => {
     // This is intended to be the function that actually triggers the fetch / POST request that adds a new booking to our API endpoint.
   // }
 
-  function show(array){
-    const showElements = array.map(element => element.classList.remove('hidden'));
-    return showElements;
-  }
+  // function show(array){
+  //   const showElements = array.map(element => element.classList.remove('hidden'));
+  //   return showElements;
+  // }
     
-  function hide(array) {
-    const hideElements = array.map(element => element.classList.add('hidden'));
-    return hideElements;
+  // function hide(array) {
+  //   const hideElements = array.map(element => element.classList.add('hidden'));
+  //   return hideElements;
+  // }
+
+  function toggleElements(array) {
+    let toggleElements = array.map(element => element.classList.toggle('hidden'))
+    return toggleElements;
   }
 
   function postRoomBooking(bookingObject) {
@@ -179,6 +183,6 @@ mainBucket.addEventListener('click', (event) => {
       }
       return response.json()
     })
-    .then(json => console.log(json))
+    .then(json => refreshData())
     .catch(error => console.log('Caught error:', error));
   }

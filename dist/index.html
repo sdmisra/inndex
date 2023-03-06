@@ -15,6 +15,7 @@
   <label for="pass-here"> Password
     <input type="password" id ="loginPass" name ="pass-here" value="overlook2021">
   </label>
+  <button class="log-in-btn" id="userLogInBtn">Login</button>
   </p>
   <main id="full-page-view">
     <label id="bookingLabel" for="bookingInput" class = "">Choose the day and room type!
@@ -27,7 +28,9 @@
         <input class="radio-room-button" type="radio" id = "suite" name="room-type">
         <label for="suite" class ="radio-room-label">Suites</label>
         <input class="radio-room-button" type="radio" id = "residential suite" name="room-type">
-        <label for="residentialSuite" class ="radio-room-label">Residential Suites</label>
+        <label for="residential suite" class ="radio-room-label">Residential Suites</label>
+        <input class="radio-room-button" type="radio" name="room-type">
+        <label class="radio-room-label">All Rooms</label> 
       </div>
     </label>
 
@@ -37,15 +40,15 @@
     <section class ="browser-box" id="mainBookingsBrowser">
       <div class ="main-view" id="defaultMainView">
       </div>
-      <div class ="main-view hidden" id="filteredMainView"></div>
     </section>
     <br>
-    <span class ="user-nav "id ="userInfo">User Info Below</span>
+    <span class ="user-nav "id ="userInfo">User Bookings</span>
     <p class = "reward-text" id="rewardsText"></p>
-    <section class ="browser-box " id="savedBookingsBrowser">
-      <div class ="saved-view" id="defaultSavedView"></div>
-      <div class ="saved-view hidden" id="filteredSavedView"></div>
+    <button class ="saved-bookings-btn" id="userBookingsBtn">Show / Hide my bookings</button>
+    <section class ="browser-box hidden" id="savedBookingsBrowser">
+    <div class ="saved-view" id="defaultSavedView"></div>
     </section>
+    <button class="log-out-btn" id="userLogOutBtn">Log out</button>
   </main>
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
   <script src="bundle.js"></script>
