@@ -8,11 +8,17 @@ body {
   height:auto;
   width: auto;
 }
+
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2px;
+}
+
+label {
+  cursor: pointer;
+  padding: 8px;
 }
 
 .browser-box {
@@ -25,33 +31,6 @@ main {
   background-color:rgb(56 41 21 / 81%);
   box-shadow: 0px 0px 5px 6px rgb(245, 245, 245);
 }
-
- /* Scroll Bar Styling */
-::-webkit-scrollbar {
-  width: 12px;
-  background:rgba(57, 33, 5, 0.84)
- }
-::-webkit-scrollbar-corner {
-  width: 18px;
-  background: rgb(215, 197, 131);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-track {
-  background:  rgba(57, 33, 5, 0.84);
-  border-radius: 4px; 
- }
-
-::-webkit-scrollbar-thumb {
-  background: goldenrod;
-  border-radius: 4px;
- }
-
- ::-webkit-scrollbar-thumb:hover {
-   background:rgba(217, 190, 93, 0.953);
-   border: rgb(149, 114, 27);
-   cursor: pointer;
- }
-
 .main-view {
   display: flex;
   height: auto;
@@ -62,10 +41,6 @@ main {
   margin: 3px;
   border-radius: 4px;
 }
-label {
-  cursor: pointer;
-  padding: 8px;
-}
 .saved-view {
   display: flex;
   height: auto;
@@ -74,7 +49,6 @@ label {
   align-content: space-around;
   justify-content: space-evenly;
 }
-
 .room-card {
   display: flex;
   flex-direction: column;
@@ -94,17 +68,41 @@ label {
   cursor: pointer;
 }
 
-
 .welcome-page {
   display: flex;
-  position: absolute;
   flex-direction: column;
   align-items: center;
-  height: 95%;
-  width: 95%;
+  height: auto;
+  width: auto;
   top: 250px;
 }
 
 .hidden {
   display:none;
+}
+
+/* Scroll Bar Styling */
+::-webkit-scrollbar {
+    width: 12px;
+    background:rgba(57, 33, 5, 0.84)
+   }
+::-webkit-scrollbar-corner {
+    width: 18px;
+    background: rgb(215, 197, 131);
+    border-radius: 3px;
+  }
+::-webkit-scrollbar-track {
+    background:  rgba(57, 33, 5, 0.84);
+    border-radius: 4px; 
+   }
+  
+::-webkit-scrollbar-thumb {
+  background: goldenrod;
+  border-radius: 4px;
+   }
+  
+::-webkit-scrollbar-thumb:hover {
+    background:rgba(217, 190, 93, 0.953);
+    border: rgb(149, 114, 27);
+    cursor: pointer;
 }

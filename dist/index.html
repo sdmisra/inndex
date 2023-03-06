@@ -17,38 +17,40 @@
   </label>
   <button class="log-in-btn" id="userLogInBtn">Login</button>
   </p>
-  <main id="full-page-view">
-    <label id="bookingLabel" for="bookingInput" class = "">Choose the day and room type!
-      <input type="date" id="bookingInput" name="book-a-room" value="2022-04-22" min="2022-01-01" max="2023-12-31">
-      <div class = "radio-buttons">
-        <input class="radio-room-button" type="radio" id = "junior suite" name="room-type">
-        <label for="junior" class ="radio-room-label">Junior Suites</label>
-        <input class="radio-room-button" type="radio" id = "single room" name="room-type">
-        <label for="single" class ="radio-room-label">Single Rooms</label>
-        <input class="radio-room-button" type="radio" id = "suite" name="room-type">
-        <label for="suite" class ="radio-room-label">Suites</label>
-        <input class="radio-room-button" type="radio" id = "residential suite" name="room-type">
-        <label for="residential suite" class ="radio-room-label">Residential Suites</label>
-        <input class="radio-room-button" type="radio" name="room-type">
-        <label class="radio-room-label">All Rooms</label> 
-      </div>
+  <main class ="full-page-view" id="fullPageView">
+    <button class="log-out-btn" id="userLogOutBtn">Log out</button>
+    <span class ="user-nav "id ="userInfo">User Bookings</span>
+    <p class = "reward-text" id="rewardsText"></p>
+    <button class = "saved-bookings-btn" id="userBookingsBtn">Show / Hide my bookings</button>
+    <section class ="browser-box hidden" id="savedBookingsBrowser">
+      <div class ="saved-view" id="defaultSavedView"></div>
+    </section>
+    <button class ="begin-browse-btn" id="userBrowseButton"> Begin / Cancel new Reservation</button>
+    <section class="new-reservations hidden" id="newBookingView">
+    <label id="bookingLabel" for="bookingInput">Choose the day and room type!
     </label>
-
+    <input class ="booking-calendar" type="date" id="bookingInput" name="book-a-room" value="2022-04-22" min="2022-01-01" max="2023-12-31">
+    <div class = "radio-buttons">
+      <label for="junior" class ="radio-room-label">Junior Suites</label>
+      <input class="radio-room-button" type="radio" id = "junior suite" name="room-type">
+      <label for="single" class ="radio-room-label">Single Rooms</label>
+      <input class="radio-room-button" type="radio" id = "single room" name="room-type">
+      <label for="suite" class ="radio-room-label">Suites</label>
+      <input class="radio-room-button" type="radio" id = "suite" name="room-type">
+      <label for="residential suite" class ="radio-room-label">Residential Suites</label>
+      <input class="radio-room-button" type="radio" id = "residential suite" name="room-type">
+      <label class="radio-room-label">All Rooms</label> 
+      <input class="radio-room-button" type="radio" name="room-type">
+    </div>
+    </section>
       <span>
-        <button id="bookingBtn">Look for open rooms</button>
+        <button class= "hidden" id="bookingBtn">Look for open rooms</button>
       </span>
+      <span class="main-announce-text hidden" id="announceText">Announcement Text lives here</span>
     <section class ="browser-box" id="mainBookingsBrowser">
       <div class ="main-view" id="defaultMainView">
       </div>
     </section>
-    <br>
-    <span class ="user-nav "id ="userInfo">User Bookings</span>
-    <p class = "reward-text" id="rewardsText"></p>
-    <button class ="saved-bookings-btn" id="userBookingsBtn">Show / Hide my bookings</button>
-    <section class ="browser-box hidden" id="savedBookingsBrowser">
-    <div class ="saved-view" id="defaultSavedView"></div>
-    </section>
-    <button class="log-out-btn" id="userLogOutBtn">Log out</button>
   </main>
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
   <script src="bundle.js"></script>
