@@ -18,7 +18,10 @@ button:hover {
   opacity: 1;
   cursor:pointer;
 }
-
+h1 {
+  font-size: 28pt;
+  background-color: rgba(20, 15, 1, 0.782);
+}
 body {
   background-color:rgba(75, 46, 11, 0.938);
   height:auto;

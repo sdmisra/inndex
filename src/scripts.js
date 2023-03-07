@@ -3,8 +3,8 @@ import './images/turing-logo.png'
 import {fetchData, postRoomBooking} from '/dist/apiCalls';
 import Hotel from './classes/Hotel';
 import './images/woodedHotel.png';
-// Promise retrieval:
-let hotelData, roomFilter, customerRooms, customerBookings, reformatDate, thisCustomer, currentBooking;
+
+let hotelData, roomFilter, customerBookings, reformatDate, thisCustomer, currentBooking;
 
 function refreshData () {
    Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
@@ -20,6 +20,8 @@ function refreshData () {
     console.log(allHotelData.rooms);
     hotelData = new Hotel(allHotelData);
     hotelData.retrieveHotelInfo(allHotelData);
+    thisCustomer = hotelData.loginCustomer(9)
+    renderCustomer(thisCustomer); 
     return hotelData
   })
 }
@@ -51,7 +53,10 @@ function refreshData () {
   // Event Listeners // 
 
 window.addEventListener('load', () => {
-  refreshData();
+  setTimeout(()=>{
+    refreshData();
+    logIn()
+  }, 3000)
   })
 
 bookRoomBtn.addEventListener('click', (event)=> {
@@ -65,15 +70,17 @@ userBrowseButton.addEventListener('click', ()=> {
   hideElements([mainBucket]);
 })
 
-userNameInput.addEventListener('keypress', (event) => {
-  if (event.keyCode == 13) {
-    logIn();
-  }
-})
+// Login Features//
 
-userLogIn.addEventListener('click', ()=> {
-  logIn();
-})
+// userNameInput.addEventListener('keypress', (event) => {
+//   if (event.keyCode == 13) {
+//     logIn();
+//   }
+// })
+
+// userLogIn.addEventListener('click', ()=> {
+//   logIn();
+// })
 
 mainBucket.addEventListener('click', (event) => {
   if (event.target.id == 'defaultMainView' || event.target.id == 'mainBookingsBrowser') {
@@ -84,7 +91,7 @@ mainBucket.addEventListener('click', (event) => {
     resetFilter();
     toggleElements([browserView, bookRoomBtn])
     setTimeout(()=> {
-      renderCustomer();
+      renderCustomer(thisCustomer);
       toggleElements([announceWords]);
       toggleElements([savedBucket]);
       toggleElements([savedBucket]);
@@ -93,7 +100,7 @@ mainBucket.addEventListener('click', (event) => {
 })
 
 userToggleBookingsBtn.addEventListener('click', () => {
-  renderCustomer();
+  renderCustomer(thisCustomer);
   toggleElements([savedBucket, userNav])
 })
 
@@ -121,13 +128,10 @@ function checkThisDate (filter) {
     }
   }
 
-function renderCustomer() {
-  refreshData();
+function renderCustomer(customer) {
+  console.log('render this', customer)
   rewardsWords.innerText = ''
-  let idNum = Number(userNameInput.value.split('customer')[1])
-  thisCustomer = hotelData.loginCustomer(idNum);
-  console.log(thisCustomer)
-  rewardsWords.innerText = `Welcome back ${thisCustomer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty!`
+  rewardsWords.innerText = `Welcome back ${customer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty!`
   customerBookings = thisCustomer.bookings;
   renderTiles(customerBookings, defaultSavedView)
 }
@@ -164,9 +168,7 @@ function renderTiles(array, element) {
   }
 
   function logIn() {
-    renderCustomer();
-    hideElements([loginView, userNav, savedBucket])
-    showElements([userLogOut, rewardsWords, userToggleBookingsBtn, userBrowseButton])
+    showElements([userToggleBookingsBtn, rewardsWords, userBrowseButton, userNav])
   }
 
   function bookRoom(click) {

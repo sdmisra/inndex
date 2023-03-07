@@ -3,10 +3,10 @@ import Customer from "./Customer";
 import Booking from "./Booking";
 
 class Hotel {
-  constructor() {
-    this.customers 
-    this.rooms 
-    this.bookings 
+  constructor(hotelData) {
+    this.customers = hotelData.customers
+    this.rooms = hotelData.rooms
+    this.bookings = hotelData.bookings
   }
 
   retrieveHotelInfo(hotelData) {
@@ -25,7 +25,8 @@ class Hotel {
   }
 
   loginCustomer(num) {
-    let foundCustomer = this.customers.find(customer => customer.id === num)
+    let ensureNum = Number(num)
+    let foundCustomer = this.customers.find(customer => customer.id === ensureNum)
     if (foundCustomer === undefined) {
       console.log('Error during login')
       return 'Error during login'
