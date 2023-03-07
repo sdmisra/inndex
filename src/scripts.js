@@ -1,6 +1,6 @@
 import './css/styles.css';
 import './images/turing-logo.png'
-import fetchData from '/dist/apiCalls'
+import {fetchData, postRoomBooking} from '/dist/apiCalls';
 import Hotel from './classes/Hotel';
 import './images/warmForest.png';
 // Promise retrieval:
@@ -19,7 +19,6 @@ function refreshData () {
   .then(allHotelData => {
     hotelData = new Hotel(allHotelData);
     hotelData.retrieveHotelInfo(allHotelData);
-    console.log('hotel updated:',hotelData);
     return hotelData
   })
 }
@@ -28,7 +27,6 @@ function refreshData () {
   const loginView = document.querySelector('#loginWindow')
 
   const bookRoomInput = document.querySelector('#bookingInput')
-  const roomTypeInput = document.querySelector('#roomTypeInput')
   const bookRoomBtn = document.querySelector('#bookingBtn')
   const userBrowseButton = document.querySelector('#userBrowseButton')
   const radioBtns = document.querySelectorAll('.radio-room-button')
@@ -68,14 +66,16 @@ userBrowseButton.addEventListener('click', ()=> {
 
 userNameInput.addEventListener('keypress', (event) => {
   if (event.keyCode == 13) {
-  renderCustomer();
-  hideElements([loginView, userNav, savedBucket])
-  showElements([userLogOut, rewardsWords, userToggleBookingsBtn,userBrowseButton])
+    logIn();
   }
 })
 
+userLogIn.addEventListener('click', ()=> {
+  logIn();
+})
+
 mainBucket.addEventListener('click', (event) => {
-  if (event.target.id == 'defaultMainView') {
+  if (event.target.id == 'defaultMainView' || event.target.id == 'mainBookingsBrowser') {
     return
   }
    else {
@@ -85,6 +85,8 @@ mainBucket.addEventListener('click', (event) => {
     setTimeout(()=> {
       renderCustomer();
       toggleElements([announceWords]);
+      toggleElements([savedBucket]);
+      toggleElements([savedBucket]);
      }, 5000)
    }
 })
@@ -93,19 +95,11 @@ userToggleBookingsBtn.addEventListener('click', () => {
   renderCustomer();
   toggleElements([savedBucket, userNav])
 })
-// userBrowseButton.addEventListener(
-//   // toggleElements([])
-// )
+
 userLogOut.addEventListener('click', () => {
   thisCustomer = undefined;
   showElements([loginView])
   hideElements([mainBucket, savedBucket, userLogOut, rewardsWords, userToggleBookingsBtn, userNav, userBrowseButton])
-})
-
-userLogIn.addEventListener('click', ()=> {
-  renderCustomer();
-  hideElements([loginView, userNav, savedBucket])
-  showElements([userLogOut, rewardsWords, userToggleBookingsBtn, userBrowseButton])
 })
 
   // Event Handlers // 
@@ -117,7 +111,7 @@ userLogIn.addEventListener('click', ()=> {
       denyBooking(reformatDate);
       hideElements([mainBucket]);
       setTimeout(()=> {
-        toggleElements([announceWords])
+        hideElements([announceWords])
       }, 3000)
       return
     }
@@ -128,6 +122,7 @@ userLogIn.addEventListener('click', ()=> {
   }
 
   function renderCustomer() {
+    refreshData();
     rewardsWords.innerText = ''
     let idNum = Number(userNameInput.value.split('customer')[1])
     thisCustomer = hotelData.loginCustomer(idNum);
@@ -140,7 +135,7 @@ userLogIn.addEventListener('click', ()=> {
     element.innerHTML = ""
     array.forEach(item => {
       element.innerHTML += `
-      <div class="room-card" id ="${item.number}" aria-role="button">
+      <div class="room-card" id ="${item.number}" aria-role="button" tab-index="1">
         <span class="room-card-detail" id ="${item.number}">Room #${item.number}</span>
         <span class="room-card-detail" id ="${item.number}">🛌${item.bedSize}</span>
         <span class="room-card-detail" id ="${item.number}">⛲️${item.bidet}</span>
@@ -152,6 +147,12 @@ userLogIn.addEventListener('click', ()=> {
     })
   }
 
+  function logIn() {
+    renderCustomer();
+    hideElements([loginView, userNav, savedBucket])
+    showElements([userLogOut, rewardsWords, userToggleBookingsBtn, userBrowseButton])
+  }
+
   function bookRoom(click) {
     let saveNumber = click.target.id;
     let saveId = thisCustomer.id;
@@ -161,13 +162,13 @@ userLogIn.addEventListener('click', ()=> {
   }
 
   function confirmBooking(date, room) {
-    toggleElements([announceWords])
+    showElements([announceWords])
     hideElements([mainBucket])
     announceWords.innerText = `You have made a successful booking for room #${room} on ${date.replaceAll('/','-')}! We will be looking forward to your visit.`
   }
 
   function denyBooking(date) {
-    toggleElements([announceWords]);
+    showElements([announceWords]);
     announceWords.innerText = `Unfortunately, there are no available rooms for those search parameters for the selected date (${date.replaceAll('/', '-')}). Please select 'All Rooms' to see all available options for selected date.`
   }
 
@@ -192,24 +193,4 @@ userLogIn.addEventListener('click', ()=> {
       const checkedButton = radioButton.checked;
       checkedButton ? roomFilter = radioButton.id : null
     }
-  }
-
-  function postRoomBooking(bookingObject) {
-    bookingObject['roomNumber'] = parseInt(bookingObject.roomNumber)
-    bookingObject['userID'] = parseInt(bookingObject.userID)
-    console.log(bookingObject);
-    fetch('http://localhost:3001/api/v1/bookings', {
-      method: 'POST',
-      body: JSON.stringify(bookingObject),
-      headers: {'Content-Type': 'application/json'}
-    })
-    .then(response => {
-      if (!response.ok) {
-        console.log(response.json());
-        throw new Error(response.message);
-      }
-      return response.json()
-    })
-    .then(json => refreshData())
-    .catch(error => console.log('Caught error:', error));
   }

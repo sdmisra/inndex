@@ -4,6 +4,20 @@ html {
   width: 100%;
 }
 
+button {
+  height: 24px;
+  width: auto;
+  border-radius: 1px;
+  opacity: .8;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+button:hover {
+  opacity: 1;
+  cursor:pointer;
+}
+
 body {
   background-color:rgba(75, 46, 11, 0.938);
   height:auto;
@@ -17,9 +31,9 @@ main {
 }
 
 label {
-  cursor: pointer;
   padding: 8px;
 }
+
 .background-image {
   position:fixed;
   top: 0;
@@ -28,13 +42,15 @@ label {
   height: 100%;
   width: 100%;
 }
+
 .full-page-view {
   font-size: 22pt;
   color:rgb(249, 160, 17);
   text-shadow:rgba(243, 225, 162, 0.979) 2px 3px 4px;
-  margin-top: 3%;
-  margin-bottom: 3%;
+  margin-top: 8%;
+  margin-bottom: 8%;
 }
+
 .browser-box {
   display: flex;
   height: auto;
@@ -46,6 +62,7 @@ label {
   background-color:rgba(56, 41, 21, 0.301);
   box-shadow: 0px 0px 5px 6px rgb(245, 245, 245);
 }
+
 .main-view {
   display: flex;
   height: auto;
@@ -56,6 +73,7 @@ label {
   margin: 3px;
   border-radius: 4px;
 }
+
 .saved-view {
   display: flex;
   height: auto;
@@ -64,6 +82,25 @@ label {
   align-content: space-around;
   justify-content: space-evenly;
 }
+.saved-view > .room-card {
+  display: flex;
+  flex-direction: column;
+  height: 175px;
+  width: 125px;
+  border: rgb(237, 174, 174) 2px solid;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  margin: 3px;
+  background-color: rgb(219, 210, 196);
+  opacity: .85;
+}
+.saved-view > .room-card:hover {
+  cursor: default;
+  opacity: .85;
+}
+
+
 .room-card {
   display: flex;
   flex-direction: column;
@@ -77,6 +114,7 @@ label {
   background-color: blanchedalmond;
   opacity: .90;
 }
+
 .room-card:hover {
   opacity: .99;
   border: goldenrod 2px solid;
@@ -84,18 +122,30 @@ label {
 }
 
 .welcome-page {
-  font-size: 20pt;
-  color:rgb(245, 207, 145);
-  text-shadow:rgba(241, 166, 17, 0.928) 2px 5px 3px;
   display: flex;
   flex-direction: column;
   align-items: center;
   height: auto;
   width: auto;
-  top: 250px;
+  margin-top: 35vh;
+  margin-bottom:35vh;
+  font-size: 20pt;
+  color:rgb(245, 207, 145);
+  text-shadow:rgba(241, 166, 17, 0.928) 2px 5px 3px;
 }
-
+.booking-calendar {
+  height: 30px;
+  width: 120px;
+  border-radius: 3px;
+  cursor: pointer;
+  opacity: .7;
+}
+.booking-calendar:hover {
+  border: rgba(241, 158, 25, 0.847);
+  opacity: 1;
+}
 .user-nav {
+  font-size: 18pt;
   background-color:rgba(20, 15, 1, 0.782);
   border: 1px solid rgba(92, 70, 8, 0.873);
   border-radius: 3px;
