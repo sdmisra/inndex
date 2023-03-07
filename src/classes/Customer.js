@@ -6,6 +6,7 @@ class Customer {
     this.name = customerData.name;
     this.bookings;
   }
+
   retrieveMyBookings(bookingsData, roomsData) {
     let foundBookings = bookingsData.filter(booking => booking['userID'] === this.id)
     this.bookings = foundBookings.map(singleBookingData => new Booking(singleBookingData))
@@ -13,14 +14,19 @@ class Customer {
     // console.log('Bookings retrieved:', this.bookings)
     return this.bookings
   }
+
   retrieveMyRooms() {
+    if (this.bookings.length === 0) {
+      return `No bookings found for current user`
+    }
     let userRooms = this.bookings.map(booking=>booking.roomDetails)
     return userRooms
   }
+  
   calcTotalCost() {
     let totalPrice = 0;
-    if (this.bookings === []) {
-      console.log('Ln 19 Customer: User does not seem to have any saved bookings!')
+    if (!this.bookings) {
+      return 'No bookings found for user'
     }
     else {
       this.bookings.forEach(booking => totalPrice += booking['cost'])

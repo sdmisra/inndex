@@ -2,9 +2,9 @@ import './css/styles.css';
 import './images/turing-logo.png'
 import {fetchData, postRoomBooking} from '/dist/apiCalls';
 import Hotel from './classes/Hotel';
-import './images/warmForest.png';
+import './images/woodedHotel.png';
 // Promise retrieval:
-let hotelData, roomFilter, customerRooms, reformatDate, thisCustomer, currentBooking;
+let hotelData, roomFilter, customerRooms, customerBookings, reformatDate, thisCustomer, currentBooking;
 
 function refreshData () {
    Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
@@ -17,6 +17,7 @@ function refreshData () {
     return apiData
   })
   .then(allHotelData => {
+    console.log(allHotelData.rooms);
     hotelData = new Hotel(allHotelData);
     hotelData.retrieveHotelInfo(allHotelData);
     return hotelData
@@ -87,7 +88,7 @@ mainBucket.addEventListener('click', (event) => {
       toggleElements([announceWords]);
       toggleElements([savedBucket]);
       toggleElements([savedBucket]);
-     }, 5000)
+     }, 4000)
    }
 })
 
@@ -99,51 +100,66 @@ userToggleBookingsBtn.addEventListener('click', () => {
 userLogOut.addEventListener('click', () => {
   thisCustomer = undefined;
   showElements([loginView])
-  hideElements([mainBucket, savedBucket, userLogOut, rewardsWords, userToggleBookingsBtn, userNav, userBrowseButton])
+  hideElements([mainBucket, savedBucket, userLogOut, rewardsWords, userToggleBookingsBtn, userNav, userBrowseButton, browserView, bookRoomBtn])
 })
 
-  // Event Handlers // 
-  function checkThisDate (filter) {
-    refreshData();
-    reformatDate = bookRoomInput.value.replaceAll('-', '/')
-    let roomsForDate = hotelData.getAvailableRooms(reformatDate, filter)
-    if (!roomsForDate.length) {
-      denyBooking(reformatDate);
-      hideElements([mainBucket]);
-      setTimeout(()=> {
-        hideElements([announceWords])
-      }, 3000)
-      return
+// Event Handlers // 
+function checkThisDate (filter) {
+  refreshData();
+  reformatDate = bookRoomInput.value.replaceAll('-', '/')
+  let roomsForDate = hotelData.getAvailableRooms(reformatDate, filter)
+  if (!roomsForDate.length) {
+    denyBooking(reformatDate);
+    hideElements([mainBucket]);
+    setTimeout(()=> {
+      hideElements([announceWords])
+    }, 5000)
     }
     else {
-      renderRooms(roomsForDate, defaultMainView);
+      renderTiles(roomsForDate, defaultMainView);
       showElements([mainBucket]);
     }
   }
 
-  function renderCustomer() {
-    refreshData();
-    rewardsWords.innerText = ''
-    let idNum = Number(userNameInput.value.split('customer')[1])
-    thisCustomer = hotelData.loginCustomer(idNum);
-    rewardsWords.innerText = `Welcome back ${thisCustomer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty.`
-    customerRooms = thisCustomer.retrieveMyRooms();
-    renderRooms(customerRooms, defaultSavedView)
-  }
+function renderCustomer() {
+  refreshData();
+  rewardsWords.innerText = ''
+  let idNum = Number(userNameInput.value.split('customer')[1])
+  thisCustomer = hotelData.loginCustomer(idNum);
+  console.log(thisCustomer)
+  rewardsWords.innerText = `Welcome back ${thisCustomer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty!`
+  customerBookings = thisCustomer.bookings;
+  renderTiles(customerBookings, defaultSavedView)
+}
 
-  function renderRooms(array, element) {
-    element.innerHTML = ""
-    array.forEach(item => {
-      element.innerHTML += `
-      <div class="room-card" id ="${item.number}" aria-role="button" tab-index="1">
-        <span class="room-card-detail" id ="${item.number}">Room #${item.number}</span>
-        <span class="room-card-detail" id ="${item.number}">🛌${item.bedSize}</span>
-        <span class="room-card-detail" id ="${item.number}">⛲️${item.bidet}</span>
-        <span class="room-card-detail" id ="${item.number}">💰${item.costPerNight}</span>
-        <span class="room-card-detail" id ="${item.number}">Beds: ${item.numBeds}</span>
-        <span class="room-card-detail" id ="${item.number}">Style: ${item.roomType}</span>
+function renderTiles(array, element) {
+  element.innerHTML = ""
+  array.forEach(item => {
+    if (element.id === 'defaultMainView') {
+      element.innerHTML += 
+      `
+      <div class="room-card" id ="${item.number}">
+      <span class="room-card-detail" id ="${item.number}">Room #${item.number}</span>
+      <span class="room-card-detail" id ="${item.number}">Bed Size: ${item.bedSize}</span>
+      <span class="room-card-detail" id ="${item.number}">Beds: ${item.numBeds}</span>
+      <span class="room-card-detail" id ="${item.number}">Bidet? ${item.bidet}</span>
+      <span class="room-card-detail" id ="${item.number}">$${item.costPerNight} /night</span>
+      <span class="room-card-detail" id ="${item.number}">${item.roomType}</span>
+      <button class="room-card-button" id="${item.number}">Book Room</button>
       </div>
       `
+    }
+    else {
+      element.innerHTML+= 
+      `
+      <div class="room-card" id ="${item.roomNumber}">
+      <span class="room-card-detail" id ="${item.roomNumber}">Room #${item.roomNumber}</span>
+      <span class="room-card-detail" id ="${item.roomNumber}">$${item.cost}</span>
+      <span class="room-card-detail" id ="${item.number}">Date: ${item.date}</span>
+      <span class="room-card-detail" id ="${item.number}">Booking ID:${item.id}</span>
+      </div>
+      `
+    }
     })
   }
 
@@ -163,13 +179,13 @@ userLogOut.addEventListener('click', () => {
 
   function confirmBooking(date, room) {
     showElements([announceWords])
-    hideElements([mainBucket])
+    hideElements([mainBucket, savedBucket, userNav])
     announceWords.innerText = `You have made a successful booking for room #${room} on ${date.replaceAll('/','-')}! We will be looking forward to your visit.`
   }
 
   function denyBooking(date) {
     showElements([announceWords]);
-    announceWords.innerText = `Unfortunately, there are no available rooms for those search parameters for the selected date (${date.replaceAll('/', '-')}). Please select 'All Rooms' to see all available options for selected date.`
+    announceWords.innerText = `Unfortunately, there are no available rooms for those search parameters for the selected date (${date}). Please select 'All Rooms' to see all available options for selected date.`
   }
 
   function toggleElements(array) {
@@ -193,4 +209,5 @@ userLogOut.addEventListener('click', () => {
       const checkedButton = radioButton.checked;
       checkedButton ? roomFilter = radioButton.id : null
     }
+    roomFilter === 'all rooms' ? roomFilter = undefined : null;
   }
