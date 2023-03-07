@@ -53,4 +53,4 @@ This project was assigned in module 2 for the Frontend Program, this work was co
 
 ## Future Feature Ideas:
 [//]: <>
-1. Develop manager tools within this application, for employee-side interactions with all of these same classes.
+1. Develop robust manager tools within this application, for employee-side interactions with all of these same classes
