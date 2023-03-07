@@ -7,6 +7,7 @@
   <title>Webpack Starter Kit</title>
 </head>
 <body>
+  <img src="./images/warmForest.png" alt="tall trees in comforting forest scene" class="background-image">
   <p id="loginWindow" class="welcome-page">
   <label for="login-here"> Username
     <input type="text" id ="loginName" name="login-here">
@@ -18,15 +19,15 @@
   <button class="log-in-btn" id="userLogInBtn">Login</button>
   </p>
   <main class ="full-page-view" id="fullPageView">
-    <button class="log-out-btn" id="userLogOutBtn">Log out</button>
-    <span class ="user-nav "id ="userInfo">User Bookings</span>
-    <p class = "reward-text" id="rewardsText"></p>
-    <button class = "saved-bookings-btn" id="userBookingsBtn">Show / Hide my bookings</button>
+    <button class="log-out-btn hidden" id="userLogOutBtn">Log out</button>
+    <p class = "user-nav hidden" id="rewardsText"></p>
+    <button class = "saved-bookings-btn hidden" id="userBookingsBtn">Show / Hide my bookings</button>
+    <span class ="user-nav hidden" id ="userInfo">User Bookings</span>
     <section class ="browser-box hidden" id="savedBookingsBrowser">
       <div class ="saved-view" id="defaultSavedView"></div>
     </section>
-    <button class ="begin-browse-btn" id="userBrowseButton"> Begin / Cancel new Reservation</button>
-    <section class="new-reservations hidden" id="newBookingView">
+    <button class ="begin-browse-btn hidden" id="userBrowseButton"> Begin / Cancel new Reservation</button>
+    <section class="user-nav new-reservations hidden" id="newBookingView">
     <label id="bookingLabel" for="bookingInput">Choose the day and room type!
     </label>
     <input class ="booking-calendar" type="date" id="bookingInput" name="book-a-room" value="2022-04-22" min="2022-01-01" max="2023-12-31">
@@ -46,8 +47,8 @@
       <span>
         <button class= "hidden" id="bookingBtn">Look for open rooms</button>
       </span>
-      <span class="main-announce-text hidden" id="announceText">Announcement Text lives here</span>
-    <section class ="browser-box" id="mainBookingsBrowser">
+      <span class="user-nav hidden" id="announceText">Announcement Text lives here</span>
+    <section class ="browser-box hidden" id="mainBookingsBrowser">
       <div class ="main-view" id="defaultMainView">
       </div>
     </section>

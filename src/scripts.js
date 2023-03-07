@@ -2,6 +2,7 @@ import './css/styles.css';
 import './images/turing-logo.png'
 import fetchData from '/dist/apiCalls'
 import Hotel from './classes/Hotel';
+import './images/warmForest.png';
 // Promise retrieval:
 let hotelData, roomFilter, customerRooms, reformatDate, thisCustomer, currentBooking;
 
@@ -52,56 +53,64 @@ function refreshData () {
 
 window.addEventListener('load', () => {
   refreshData();
-  toggleElements([fullPageView])
   })
+
 bookRoomBtn.addEventListener('click', (event)=> {
   resetFilter();
   checkThisDate(roomFilter);
 })
+
 userBrowseButton.addEventListener('click', ()=> {
   resetFilter();
-  checkThisDate(roomFilter);
-  toggleElements([browserView, bookRoomBtn, mainBucket]);
+  toggleElements([browserView, bookRoomBtn]);
+  hideElements([mainBucket]);
 })
+
 userNameInput.addEventListener('keypress', (event) => {
   if (event.keyCode == 13) {
   renderCustomer();
-  toggleElements([loginView])
-  toggleElements([fullPageView, mainBucket])
+  hideElements([loginView, userNav, savedBucket])
+  showElements([userLogOut, rewardsWords, userToggleBookingsBtn,userBrowseButton])
   }
 })
 
 mainBucket.addEventListener('click', (event) => {
-  bookRoom(event, hotelData);
-  resetFilter();
-  toggleElements([browserView, bookRoomBtn])
-  setTimeout(()=> {
-    renderCustomer();
-    toggleElements([announceWords]);
-  }, 5000)
+  if (event.target.id == 'defaultMainView') {
+    return
+  }
+   else {
+    bookRoom(event, hotelData);
+    resetFilter();
+    toggleElements([browserView, bookRoomBtn])
+    setTimeout(()=> {
+      renderCustomer();
+      toggleElements([announceWords]);
+     }, 5000)
+   }
 })
 
 userToggleBookingsBtn.addEventListener('click', () => {
   renderCustomer();
-  toggleElements([savedBucket])
+  toggleElements([savedBucket, userNav])
 })
 // userBrowseButton.addEventListener(
 //   // toggleElements([])
 // )
 userLogOut.addEventListener('click', () => {
   thisCustomer = undefined;
-  toggleElements([loginView])
-  toggleElements([fullPageView, mainBucket, savedBucket])
+  showElements([loginView])
+  hideElements([mainBucket, savedBucket, userLogOut, rewardsWords, userToggleBookingsBtn, userNav, userBrowseButton])
 })
 
 userLogIn.addEventListener('click', ()=> {
   renderCustomer();
-  toggleElements([loginView])
-  toggleElements([fullPageView, mainBucket])
+  hideElements([loginView, userNav, savedBucket])
+  showElements([userLogOut, rewardsWords, userToggleBookingsBtn, userBrowseButton])
 })
 
   // Event Handlers // 
   function checkThisDate (filter) {
+    refreshData();
     reformatDate = bookRoomInput.value.replaceAll('-', '/')
     let roomsForDate = hotelData.getAvailableRooms(reformatDate, filter)
     if (!roomsForDate.length) {
@@ -125,8 +134,8 @@ userLogIn.addEventListener('click', ()=> {
     rewardsWords.innerText = `Welcome back ${thisCustomer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty.`
     customerRooms = thisCustomer.retrieveMyRooms();
     renderRooms(customerRooms, defaultSavedView)
-    toggleElements([userNav])
   }
+
   function renderRooms(array, element) {
     element.innerHTML = ""
     array.forEach(item => {
@@ -142,25 +151,23 @@ userLogIn.addEventListener('click', ()=> {
       `
     })
   }
+
   function bookRoom(click) {
     let saveNumber = click.target.id;
     let saveId = thisCustomer.id;
-    console.log('clicked:', saveNumber)
     currentBooking = {"userID": `${saveId}`, "date": `${reformatDate}`, "roomNumber": `${saveNumber}`}
     postRoomBooking(currentBooking);
     confirmBooking(reformatDate, saveNumber);
-    console.log(hotelData)
   }
 
   function confirmBooking(date, room) {
     toggleElements([announceWords])
-    toggleElements([mainBucket])
+    hideElements([mainBucket])
     announceWords.innerText = `You have made a successful booking for room #${room} on ${date.replaceAll('/','-')}! We will be looking forward to your visit.`
   }
 
   function denyBooking(date) {
-    toggleElements([announceWords])
-    hideElements([mainBucket])
+    toggleElements([announceWords]);
     announceWords.innerText = `Unfortunately, there are no available rooms for those search parameters for the selected date (${date.replaceAll('/', '-')}). Please select 'All Rooms' to see all available options for selected date.`
   }
 
