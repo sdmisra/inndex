@@ -8,9 +8,9 @@ This project allows users to log into an account for a hotel in order to browse 
 [//]: <>
 1. You will need two *separate* directories - one for the front end and one to emulate the back end / server:
 
-Clone down the frontend repo found at: https://github.com/sdmisra/inndex \
+Clone down the frontend repo found at: https://github.com/sdmisra/inndex 
 
-Clone down the backend repo found at: https://github.com/turingschool-examples/overlook-api \
+Clone down the backend repo found at: https://github.com/turingschool-examples/overlook-api 
 
 1. Install dependencies by using ‘npm install’ in your terminal within each directory. It is helpful in your terminal to create a second tab (with command + t on macs) in which to run the backend server.
 
