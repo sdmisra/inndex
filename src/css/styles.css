@@ -89,13 +89,14 @@ button:hover {
 }
 
 .saved-view > .room-card {
-  font-size: 10pt;
+  font-size: 11pt;
   display: flex;
   flex-direction: column;
   height: 175px;
   width: 125px;
   border: rgb(255, 255, 255) 2px solid;
   color:rgb(215, 197, 131);
+  text-shadow: rgba(57, 48, 17, 0.979) 2px 3px 4px;
   justify-content: center;
   align-items: center;
   border-radius: 3px;
