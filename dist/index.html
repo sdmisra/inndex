@@ -7,7 +7,46 @@
   <title>Webpack Starter Kit</title>
 </head>
 <body>
-  <img src="./images/turing-logo.png" alt="turing logo">
+  <p id="loginWindow" class="welcome-page">
+  <label for="login-here"> Username
+    <input type="text" id ="loginName" name="login-here">
+  </label>
+  <br>
+  <label for="pass-here"> Password
+    <input type="password" id ="loginPass" name ="pass-here" value="overlook2021">
+  </label>
+  </p>
+  <main id="full-page-view">
+    <label id="bookingLabel" for="bookingInput" class = "">Choose the day and room type!
+      <input type="date" id="bookingInput" name="book-a-room" value="2022-04-22" min="2022-01-01" max="2023-12-31">
+      <div class = "radio-buttons">
+        <input class="radio-room-button" type="radio" id = "junior suite" name="room-type">
+        <label for="junior" class ="radio-room-label">Junior Suites</label>
+        <input class="radio-room-button" type="radio" id = "single room" name="room-type">
+        <label for="single" class ="radio-room-label">Single Rooms</label>
+        <input class="radio-room-button" type="radio" id = "suite" name="room-type">
+        <label for="suite" class ="radio-room-label">Suites</label>
+        <input class="radio-room-button" type="radio" id = "residential suite" name="room-type">
+        <label for="residentialSuite" class ="radio-room-label">Residential Suites</label>
+      </div>
+    </label>
+
+      <span>
+        <button id="bookingBtn">Look for open rooms</button>
+      </span>
+    <section class ="browser-box" id="mainBookingsBrowser">
+      <div class ="main-view" id="defaultMainView">
+      </div>
+      <div class ="main-view hidden" id="filteredMainView"></div>
+    </section>
+    <br>
+    <span class ="user-nav "id ="userInfo">User Info Below</span>
+    <p class = "reward-text" id="rewardsText"></p>
+    <section class ="browser-box " id="savedBookingsBrowser">
+      <div class ="saved-view" id="defaultSavedView"></div>
+      <div class ="saved-view hidden" id="filteredSavedView"></div>
+    </section>
+  </main>
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
   <script src="bundle.js"></script>
 </body>
