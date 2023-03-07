@@ -9,35 +9,35 @@ describe('Room tests are running', function() {
     testRoom = new Room(testRoomData[0]);
   })
 
-  it.skip('should be a function', ()=> {
+  it('should be a function', ()=> {
     assert.isFunction(Room);
   })
 
-  it.skip('should be able to create an instance of Room', () => {
+  it('should be able to create an instance of Room', () => {
     assert.instanceOf(testRoom, Room)
   })
 
-  it.skip('should contain a room number', () => {
+  it('should contain a room number', () => {
     assert.equal(testRoom.number, 15)
   })
   
-  it.skip('should contain a room type', () => {
+  it('should contain a room type', () => {
     assert.equal(testRoom.roomType, 'residential suite')
   })
 
-  it.skip('should indicate the presence of a bidet',() => {
+  it('should indicate the presence of a bidet',() => {
     assert.equal(testRoom.bidet, false)
   })
 
-  it.skip('should contain the size of beds in the room', () => {
+  it('should contain the size of beds in the room', () => {
     assert.equal(testRoom.bedSize, 'full')
   })
 
-  it.skip('should indicate the number of beds in the room', () => {
+  it('should indicate the number of beds in the room', () => {
     assert.equal(testRoom.numBeds, 1)
   })
 
-  it.skip('should indicate the the cost per night to stay in the room', () => {
+  it('should indicate the the cost per night to stay in the room', () => {
     assert.equal(testRoom.costPerNight, 294.56)
   })
 

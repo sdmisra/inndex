@@ -8,13 +8,14 @@ class Booking {
     this.roomNumber = bookingData.roomNumber;
     this.roomDetails;
     this.cost;
-    // console.log('Initial Booking:', this);
   }
   retrieveRoomInfo(roomsData) {
     let foundRoom = roomsData.find(room => room.number === this.roomNumber)
+    if (!foundRoom) {
+      return 'Error in finding room for selected booking'
+    }
     this.cost = foundRoom.costPerNight
     this.roomDetails = new Room(foundRoom);
-    // console.log('made a room and put it here:', this.roomDetails)
   }
 }
 

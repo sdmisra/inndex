@@ -17,6 +17,7 @@ function refreshData () {
     return apiData
   })
   .then(allHotelData => {
+    console.log(allHotelData.rooms);
     hotelData = new Hotel(allHotelData);
     hotelData.retrieveHotelInfo(allHotelData);
     return hotelData

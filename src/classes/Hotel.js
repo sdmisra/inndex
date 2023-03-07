@@ -3,10 +3,10 @@ import Customer from "./Customer";
 import Booking from "./Booking";
 
 class Hotel {
-  constructor(hotelData) {
-    this.customers = hotelData.customers
-    this.rooms = hotelData.rooms
-    this.bookings = hotelData.bookings
+  constructor() {
+    this.customers 
+    this.rooms 
+    this.bookings 
   }
 
   retrieveHotelInfo(hotelData) {
@@ -26,11 +26,16 @@ class Hotel {
 
   loginCustomer(num) {
     let foundCustomer = this.customers.find(customer => customer.id === num)
+    if (foundCustomer === undefined) {
+      console.log('Error during login')
+      return 'Error during login'
+    }
     return foundCustomer
   }
   
   getAvailableRooms(date, filter = undefined) {
     let dateToCheck = date;
+
     let bookedRoomNumbers = this.bookings.filter(booking=> booking.date === dateToCheck).map(booking => booking.roomNumber)
     let availableRooms;
     if (filter) {
