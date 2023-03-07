@@ -6,7 +6,8 @@ This project allows users to log into an account for a hotel in order to browse 
   
 ## Installation Instructions:
 [//]: <>
-1. You will need two *separate* directories - one for the front end and one to emulate the back end / server:
+
+You will need two *separate* directories - one for the front end and one to emulate the back end / server:
 
 Clone down the frontend repo found at: https://github.com/sdmisra/inndex 
 
@@ -31,7 +32,7 @@ Run 'npm test' from the terminal while within the main directory of the applicat
 [//]: <>
 
 
-If you encounter errors when trying to host the site with webpack: Remember to use ‘npm install’ before trying to host the server on your local machine!
+*If you encounter errors when trying to host the site with webpack: Remember to use ‘npm install’ before trying to host the server on your local machine!
 
 ## Context:
 [//]: <>
