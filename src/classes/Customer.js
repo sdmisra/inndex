@@ -17,6 +17,7 @@ class Customer {
 
   retrieveMyRooms() {
     if (this.bookings.length === 0) {
+      alert('You dont seem to have any rooms with us currently!')
       return `No bookings found for current user`
     }
     let userRooms = this.bookings.map(booking=>booking.roomDetails)

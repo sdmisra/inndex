@@ -1,10 +1,10 @@
 import './css/styles.css';
 import './images/turing-logo.png'
-import {fetchData, postRoomBooking} from '/dist/apiCalls';
+import fetchData from '/dist/apiCalls';
 import Hotel from './classes/Hotel';
 import './images/woodedHotel.png';
 // Promise retrieval:
-let hotelData, roomFilter, customerRooms, customerBookings, reformatDate, thisCustomer, currentBooking;
+let hotelData, roomFilter, customerRooms, customerBookings, reformatDate, thisCustomer, currentBooking, idNum;
 
 function refreshData () {
    Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
@@ -17,7 +17,7 @@ function refreshData () {
     return apiData
   })
   .then(allHotelData => {
-    console.log(allHotelData.rooms);
+    console.log('refreshedData', allHotelData);
     hotelData = new Hotel(allHotelData);
     hotelData.retrieveHotelInfo(allHotelData);
     return hotelData
@@ -84,13 +84,11 @@ mainBucket.addEventListener('click', (event) => {
     resetFilter();
     toggleElements([browserView, bookRoomBtn])
     setTimeout(()=> {
-      renderCustomer();
       toggleElements([announceWords]);
-      toggleElements([savedBucket]);
-      toggleElements([savedBucket]);
-     }, 4000)
-   }
+    }, 4000)
+  }
 })
+
 
 userToggleBookingsBtn.addEventListener('click', () => {
   renderCustomer();
@@ -124,7 +122,7 @@ function checkThisDate (filter) {
 function renderCustomer() {
   refreshData();
   rewardsWords.innerText = ''
-  let idNum = Number(userNameInput.value.split('customer')[1])
+  idNum = Number(userNameInput.value.split('customer')[1])
   thisCustomer = hotelData.loginCustomer(idNum);
   console.log(thisCustomer)
   rewardsWords.innerText = `Welcome back ${thisCustomer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty!`
@@ -211,3 +209,26 @@ function renderTiles(array, element) {
     }
     roomFilter === 'all rooms' ? roomFilter = undefined : null;
   }
+
+  function postRoomBooking(bookingObject) {
+    bookingObject['roomNumber'] = parseInt(bookingObject.roomNumber)
+    bookingObject['userID'] = parseInt(bookingObject.userID)
+    fetch('http://localhost:3001/api/v1/bookings', {
+      method: 'POST',
+      body: JSON.stringify(bookingObject),
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(response => {
+      if (!response.ok) {
+        console.log(response.json());
+        throw new Error(response.message);
+      }
+      return response.json()
+    })
+    .then(json => {
+      refreshData();
+      renderCustomer();
+    })
+    .catch(error => console.log('Caught error:', error));
+  }
+  
