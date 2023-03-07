@@ -89,6 +89,7 @@ button:hover {
 }
 
 .saved-view > .room-card {
+  font-size: 10pt;
   display: flex;
   flex-direction: column;
   height: 175px;
