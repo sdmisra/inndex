@@ -7,17 +7,17 @@
   <title>Misra Resort</title>
 </head>
 <body>
-  <img src="./images/woodedHotel.png" alt="tall trees in comforting forest scene" class="background-image">
-  <p id="loginWindow" class="welcome-page">
-  <label class ="user-nav" for="login-here"> Username
-    <input type="text" id ="loginName" name="login-here">
-  </label>
-  <br>
-  <label class ="user-nav" for="pass-here"> Password
-    <input type="password" id ="loginPass" name ="pass-here" value="overlook2021">
-  </label>
-  <button class="log-in-btn" id="userLogInBtn">Login</button>
-  </p>
+  <img src="./images/woodedHotel.png" alt="woodland hotel in comforting forest scene" class="background-image">
+  <section id="loginWindow" class="welcome-page">
+    <label class ="user-nav" for="login-here"> Username
+      <input type="text" id ="loginName" name="login-here">
+    </label>
+    <br>
+    <label class ="user-nav" for="pass-here"> Password
+      <input type="password" id ="loginPass" name ="pass-here" value="overlook2021">
+    </label>
+    <button class="log-in-btn" id="userLogInBtn">Login</button>
+  </section>
   <main class ="full-page-view" id="fullPageView">
     <button class="log-out-btn hidden" id="userLogOutBtn">Log out</button>
     <p class = "user-nav hidden" id="rewardsText"></p>
@@ -28,21 +28,20 @@
     </section>
     <button class ="begin-browse-btn hidden" id="userBrowseButton"> Begin / Cancel new Reservation</button>
     <section class="user-nav new-reservations hidden" id="newBookingView">
-    <label id="bookingLabel" for="bookingInput">Choose the day and room type!
-    </label>
-    <input class ="booking-calendar" type="date" id="bookingInput" name="book-a-room" value="2022-04-22" min="2022-01-01" max="2023-12-31">
-    <div class = "radio-buttons">
-      <label for="junior" class ="radio-room-label">Junior Suites</label>
-      <input class="radio-room-button" type="radio" id = "junior suite" name="room-type">
-      <label for="single" class ="radio-room-label">Single Rooms</label>
-      <input class="radio-room-button" type="radio" id = "single room" name="room-type">
-      <label for="suite" class ="radio-room-label">Suites</label>
-      <input class="radio-room-button" type="radio" id = "suite" name="room-type">
-      <label for="residential suite" class ="radio-room-label">Residential Suites</label>
-      <input class="radio-room-button" type="radio" id = "residential suite" name="room-type">
-      <label class="radio-room-label">All Rooms</label> 
-      <input class="radio-room-button" type="radio" name="room-type">
-    </div>
+      <label id="bookingLabel" for="bookingInput">Choose the day and room type!</label>
+      <input class ="booking-calendar" type="date" id="bookingInput" name="book-a-room" value="2022-04-22" min="2022-01-01" max="2023-12-31">
+      <div class ="radio-buttons">
+        <label for="junior suite" class ="radio-room-label">Junior Suites</label>
+        <input class="radio-room-button" type="radio" id="junior suite" name="room-type-radio">
+        <label for="single room" class ="radio-room-label">Single Rooms</label>
+        <input class="radio-room-button" type="radio" id="single room" name="room-type-radio">
+        <label for="suite" class ="radio-room-label">Suites</label>
+        <input class="radio-room-button" type="radio" id="suite" name="room-type-radio">
+        <label for="residential suite" class ="radio-room-label">Residential Suites</label>
+        <input class="radio-room-button" type="radio" id ="residential suite" name="room-type-radio">
+        <label class="radio-room-label" for="all rooms">All Rooms</label> 
+        <input class="radio-room-button" type="radio" name="room-type-radio" id="all rooms">
+      </div>
     </section>
       <span>
         <button class= "hidden" id="bookingBtn">Look for open rooms</button>

@@ -4,7 +4,7 @@ import {fetchData, postRoomBooking} from '/dist/apiCalls';
 import Hotel from './classes/Hotel';
 import './images/woodedHotel.png';
 // Promise retrieval:
-let hotelData, roomFilter, customerRooms, reformatDate, thisCustomer, currentBooking;
+let hotelData, roomFilter, customerRooms, customerBookings, reformatDate, thisCustomer, currentBooking;
 
 function refreshData () {
    Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
@@ -115,7 +115,7 @@ function checkThisDate (filter) {
     }, 5000)
     }
     else {
-      renderRooms(roomsForDate, defaultMainView);
+      renderTiles(roomsForDate, defaultMainView);
       showElements([mainBucket]);
     }
   }
@@ -125,12 +125,13 @@ function renderCustomer() {
   rewardsWords.innerText = ''
   let idNum = Number(userNameInput.value.split('customer')[1])
   thisCustomer = hotelData.loginCustomer(idNum);
+  console.log(thisCustomer)
   rewardsWords.innerText = `Welcome back ${thisCustomer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty!`
-  customerRooms = thisCustomer.retrieveMyRooms();
-  renderRooms(customerRooms, defaultSavedView)
+  customerBookings = thisCustomer.bookings;
+  renderTiles(customerBookings, defaultSavedView)
 }
 
-function renderRooms(array, element) {
+function renderTiles(array, element) {
   element.innerHTML = ""
   array.forEach(item => {
     if (element.id === 'defaultMainView') {
@@ -140,9 +141,9 @@ function renderRooms(array, element) {
       <span class="room-card-detail" id ="${item.number}">Room #${item.number}</span>
       <span class="room-card-detail" id ="${item.number}">Bed Size: ${item.bedSize}</span>
       <span class="room-card-detail" id ="${item.number}">Beds: ${item.numBeds}</span>
-      <span class="room-card-detail" id ="${item.number}">⛲️${item.bidet}</span>
+      <span class="room-card-detail" id ="${item.number}">Bidet? ${item.bidet}</span>
       <span class="room-card-detail" id ="${item.number}">$${item.costPerNight} /night</span>
-      <span class="room-card-detail" id ="${item.number}">Type:${item.roomType}</span>
+      <span class="room-card-detail" id ="${item.number}">${item.roomType}</span>
       <button class="room-card-button" id="${item.number}">Book Room</button>
       </div>
       `
@@ -150,13 +151,11 @@ function renderRooms(array, element) {
     else {
       element.innerHTML+= 
       `
-      <div class="room-card" id ="${item.number}">
-      <span class="room-card-detail" id ="${item.number}">Room #${item.number}</span>
-      <span class="room-card-detail" id ="${item.number}">Bed Size: ${item.bedSize}</span>
-      <span class="room-card-detail" id ="${item.number}">Beds: ${item.numBeds}</span>
-      <span class="room-card-detail" id ="${item.number}">⛲️${item.bidet}</span>
-      <span class="room-card-detail" id ="${item.number}">$${item.costPerNight} /night</span>
-      <span class="room-card-detail" id ="${item.number}">Style: ${item.roomType}</span>
+      <div class="room-card" id ="${item.roomNumber}">
+      <span class="room-card-detail" id ="${item.roomNumber}">Room #${item.roomNumber}</span>
+      <span class="room-card-detail" id ="${item.roomNumber}">$${item.cost}</span>
+      <span class="room-card-detail" id ="${item.number}">Date: ${item.date}</span>
+      <span class="room-card-detail" id ="${item.number}">Booking ID:${item.id}</span>
       </div>
       `
     }
@@ -179,7 +178,7 @@ function renderRooms(array, element) {
 
   function confirmBooking(date, room) {
     showElements([announceWords])
-    hideElements([mainBucket])
+    hideElements([mainBucket, savedBucket, userNav])
     announceWords.innerText = `You have made a successful booking for room #${room} on ${date.replaceAll('/','-')}! We will be looking forward to your visit.`
   }
 
@@ -209,4 +208,5 @@ function renderRooms(array, element) {
       const checkedButton = radioButton.checked;
       checkedButton ? roomFilter = radioButton.id : null
     }
+    roomFilter === 'all rooms' ? roomFilter = undefined : null;
   }

@@ -19,7 +19,7 @@ function postRoomBooking(bookingObject) {
     }
     return response.json()
   })
-  .then(json => refreshData())
+  .then(json => console.log(json))
   .catch(error => console.log('Caught error:', error));
 }
 

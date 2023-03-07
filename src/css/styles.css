@@ -147,6 +147,9 @@ label {
   opacity: 1;
 }
 .user-nav {
+  display:flex;
+  flex-direction: column-reverse;
+  align-items: center;
   font-size: 18pt;
   background-color:rgba(20, 15, 1, 0.782);
   border: 1px solid rgba(92, 70, 8, 0.873);
