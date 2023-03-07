@@ -6,6 +6,7 @@ class Customer {
     this.name = customerData.name;
     this.bookings;
   }
+
   retrieveMyBookings(bookingsData, roomsData) {
     let foundBookings = bookingsData.filter(booking => booking['userID'] === this.id)
     this.bookings = foundBookings.map(singleBookingData => new Booking(singleBookingData))
@@ -13,10 +14,12 @@ class Customer {
     // console.log('Bookings retrieved:', this.bookings)
     return this.bookings
   }
+
   retrieveMyRooms() {
     let userRooms = this.bookings.map(booking=>booking.roomDetails)
     return userRooms
   }
+  
   calcTotalCost() {
     let totalPrice = 0;
     if (this.bookings === []) {

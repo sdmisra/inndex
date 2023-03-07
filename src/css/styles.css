@@ -82,22 +82,24 @@ label {
   align-content: space-around;
   justify-content: space-evenly;
 }
+
 .saved-view > .room-card {
   display: flex;
   flex-direction: column;
   height: 175px;
   width: 125px;
-  border: rgb(237, 174, 174) 2px solid;
+  border: rgb(255, 255, 255) 2px solid;
+  color:rgb(215, 197, 131);
   justify-content: center;
   align-items: center;
   border-radius: 3px;
   margin: 3px;
-  background-color: rgb(219, 210, 196);
-  opacity: .85;
+  background-color: rgba(20, 15, 1, 0.782);
+  opacity: .95;
 }
 .saved-view > .room-card:hover {
+  border: rgb(255, 255, 255) 2px solid;
   cursor: default;
-  opacity: .85;
 }
 
 
