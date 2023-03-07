@@ -155,8 +155,8 @@ function renderTiles(array, element) {
       <div class="room-card" id ="${item.roomNumber}">
       <span class="room-card-detail" id ="${item.roomNumber}">Room #${item.roomNumber}</span>
       <span class="room-card-detail" id ="${item.roomNumber}">$${item.cost}</span>
-      <span class="room-card-detail" id ="${item.number}">Date: ${item.date}</span>
-      <span class="room-card-detail" id ="${item.number}">Booking ID:${item.id}</span>
+      <span class="room-card-detail" id ="${item.number}">Booking ID:</span>
+      <span class="room-card-detail" id ="${item.number}">${item.id}</span>
       </div>
       `
     }
@@ -179,7 +179,7 @@ function renderTiles(array, element) {
 
   function confirmBooking(date, room) {
     showElements([announceWords])
-    hideElements([mainBucket, savedBucket, userNav])
+    hideElements([mainBucket, userNav])
     announceWords.innerText = `You have made a successful booking for room #${room} on ${date.replaceAll('/','-')}! We will be looking forward to your visit.`
   }
 
