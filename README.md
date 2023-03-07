@@ -8,7 +8,6 @@ This project allows users to log into an account for a hotel in order to browse 
 [//]: <>
 1. You will need two *separate* directories - one for the front end and one to emulate the back end / server:
 
-1. 
 Clone down the frontend repo found at: https://github.com/sdmisra/inndex \
 
 Clone down the backend repo found at: https://github.com/turingschool-examples/overlook-api \
