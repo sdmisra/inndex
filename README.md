@@ -2,7 +2,7 @@
 
 ## Abstract:
 [//]: <>
-This project allows users to log into an account for a hotel in order to browse and book rooms. They have the ability to look through their previous reservations at our Woodland Retreat Hotel, and reserve a new room to return back to the embrace of our woodland respite!
+This application allows users to log into an account for a hotel in order to browse and book rooms. They have the ability to look through their previous reservations at our Woodland Retreat Hotel, and reserve a new room to return back to the embrace of our woodland respite!
   
 ## Installation Instructions:
 [//]: <>
