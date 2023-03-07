@@ -1,4 +1,4 @@
-# Hotel Inndex - The Woodland Retreat Hotel
+# Inndex - The Woodland Retreat Hotel
 
 ## Abstract:
 [//]: <>
