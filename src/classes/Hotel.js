@@ -27,7 +27,6 @@ class Hotel {
   loginCustomer(num) {
     let foundCustomer = this.customers.find(customer => customer.id === num)
     if (foundCustomer === undefined) {
-      console.log('Error during login')
       return 'Error during login'
     }
     return foundCustomer

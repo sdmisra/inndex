@@ -8,24 +8,30 @@ import testRoomData from '../src/data/roomsTestData';
 
 describe('Customer tests are running', function() {
   let testUser;
+
   beforeEach(() => {
+
     testUser = new Customer(testCustomers[0]);
     testUser.retrieveMyBookings(testBookings, testRoomData);
   });
 
   it('should be a function', function() {
+
     assert.isFunction(Customer);
   });
 
   it('should be able to create an instance of Customer', () => {
+
     assert.instanceOf(testUser, Customer);
   });
 
   it('should contain a customer ID', () => {
+
     assert.equal(testUser.id, 9);
   });
 
   it('should contain a customers username', () => {
+
     assert.equal(testUser.name, 'Faustino Quitzon');
   });
 
@@ -36,12 +42,14 @@ describe('Customer tests are running', function() {
   })
 
   it('should provide an error if no bookings are found for a user', ()=> {
+
     let fakeUser = new Customer(testCustomers[1]);
     fakeUser.bookings = []
     assert.equal(fakeUser.retrieveMyRooms(testBookings, testRoomData), 'No bookings found for current user');
   })
 
   it('should be able to retrieve a list of a users rooms after retrieving booking data', ()=> {
+    
     let testUserRooms = testUser.retrieveMyRooms();
 
     assert.equal(testUserRooms.length, 2);
