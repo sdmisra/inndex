@@ -32,7 +32,7 @@ Run 'npm test' from the terminal while within the main directory of the applicat
 [//]: <>
 
 
-*If you encounter errors when trying to host the site with webpack: Remember to use ‘npm install’ before trying to host the server on your local machine!
+If you encounter errors when trying to host the site with webpack: Remember to use ‘npm install’ before trying to host the server on your local machine!
 
 ## Context:
 [//]: <>
