@@ -30,6 +30,7 @@ Run 'npm test' from the terminal while within the main directory of the applicat
 
 ## Preview of App:
 [//]: <>
+![Screenshot 2023-03-07 at 11 12 51 AM](https://user-images.githubusercontent.com/117242156/223516482-66e05c1c-b1ee-43f0-8739-f7bd20bf6c55.png)
 
 
 If you encounter errors when trying to host the site with webpack: Remember to use ‘npm install’ before trying to host the server on your local machine!
