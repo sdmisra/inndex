@@ -13,6 +13,10 @@ class Customer {
     // console.log('Bookings retrieved:', this.bookings)
     return this.bookings
   }
+  retrieveMyRooms() {
+    let userRooms = this.bookings.map(booking=>booking.roomDetails)
+    return userRooms
+  }
   calcTotalCost() {
     let totalPrice = 0;
     if (this.bookings === []) {

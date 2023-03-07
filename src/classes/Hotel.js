@@ -8,8 +8,39 @@ class Hotel {
     this.rooms = hotelData.rooms
     this.bookings = hotelData.bookings
   }
-  retrieveManagerInfo() {
-    // This function might allow the Hotel class to initialize all three arrays into arrays filled with instances of their respective classes. This will prevent redundancy in class creation that happens with each step of the Customer's track of experience.
+
+  retrieveHotelInfo(hotelData) {
+    this.customers = hotelData.customers.map(customer => {
+      let thisCust = new Customer(customer)
+      thisCust.retrieveMyBookings(hotelData.bookings, hotelData.rooms)
+      thisCust.calcTotalCost()
+      return thisCust
+    })
+    this.bookings = hotelData.bookings.map(booking => {
+      let thisBooking = new Booking(booking);
+      thisBooking.retrieveRoomInfo(hotelData.rooms);
+      return thisBooking
+    })
+    this.rooms = hotelData.rooms.map(room => new Room(room));
+  }
+
+  loginCustomer(num) {
+    let foundCustomer = this.customers.find(customer => customer.id === num)
+    return foundCustomer
+  }
+  
+  getAvailableRooms(date, filter = undefined) {
+    let dateToCheck = date;
+    let bookedRoomNumbers = this.bookings.filter(booking=> booking.date === dateToCheck).map(booking => booking.roomNumber)
+    let availableRooms;
+    if (filter) {
+      availableRooms = this.rooms.filter(room => !bookedRoomNumbers.includes(room.number) && room.roomType == filter)
+    }
+    else {
+      availableRooms = this.rooms.filter(room => !bookedRoomNumbers.includes(room.number))
+    }
+    this.openRooms = availableRooms;
+    return availableRooms
   }
 }
 
