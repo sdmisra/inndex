@@ -3,8 +3,8 @@ import './images/turing-logo.png'
 import fetchData from '/dist/apiCalls';
 import Hotel from './classes/Hotel';
 import './images/woodedHotel.png';
-// Promise retrieval:
-let hotelData, roomFilter, customerRooms, customerBookings, reformatDate, thisCustomer, currentBooking, idNum;
+
+let hotelData, roomFilter, customerBookings, reformatDate, thisCustomer, currentBooking, idNum;
 
 function refreshData () {
    Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
@@ -17,13 +17,13 @@ function refreshData () {
     return apiData
   })
   .then(allHotelData => {
-    console.log('refreshedData', allHotelData);
     hotelData = new Hotel(allHotelData);
     hotelData.retrieveHotelInfo(allHotelData);
+    console.log('hotelData after refresh and init', hotelData)
     return hotelData
   })
 }
-
+// function reFetchData()
   // Document Selectors //
   const loginView = document.querySelector('#loginWindow')
 
@@ -121,16 +121,17 @@ function checkThisDate (filter) {
 
 function renderCustomer() {
   refreshData();
-  rewardsWords.innerText = ''
-  idNum = Number(userNameInput.value.split('customer')[1])
+  rewardsWords.innerText = '';
+  idNum = Number(userNameInput.value.split('customer')[1]);
   thisCustomer = hotelData.loginCustomer(idNum);
-  console.log(thisCustomer)
+  console.log(thisCustomer);
   rewardsWords.innerText = `Welcome back ${thisCustomer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty!`
   customerBookings = thisCustomer.bookings;
   renderTiles(customerBookings, defaultSavedView)
 }
 
-function renderTiles(array, element) {
+function renderTiles(array, element, price) {
+  console.log(price)
   element.innerHTML = ""
   array.forEach(item => {
     if (element.id === 'defaultMainView') {
@@ -152,7 +153,6 @@ function renderTiles(array, element) {
       `
       <div class="room-card" id ="${item.roomNumber}">
       <span class="room-card-detail" id ="${item.roomNumber}">Room #${item.roomNumber}</span>
-      <span class="room-card-detail" id ="${item.roomNumber}">$${item.cost}</span>
       <span class="room-card-detail" id ="${item.number}">Booking ID:</span>
       <span class="room-card-detail" id ="${item.number}">${item.id}</span>
       </div>
@@ -210,6 +210,16 @@ function renderTiles(array, element) {
     roomFilter === 'all rooms' ? roomFilter = undefined : null;
   }
 
+  function displayUserBookings(id) {
+    fetch(`http://localhost:3001/api/v1/bookings`)
+      .then(res => res.json())
+      .then(data => {
+        const userData = data.bookings.filter(booking => booking.userID == id);
+        console.log(userData)
+        renderTiles(userData, defaultSavedView);
+      });
+  }
+
   function postRoomBooking(bookingObject) {
     bookingObject['roomNumber'] = parseInt(bookingObject.roomNumber)
     bookingObject['userID'] = parseInt(bookingObject.userID)
@@ -226,9 +236,7 @@ function renderTiles(array, element) {
       return response.json()
     })
     .then(json => {
-      refreshData();
-      renderCustomer();
+      displayUserBookings(bookingObject.userID)
     })
     .catch(error => console.log('Caught error:', error));
   }
-  
