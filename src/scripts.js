@@ -1,10 +1,10 @@
 import './css/styles.css';
 import './images/turing-logo.png'
-import {fetchData, postRoomBooking} from '/dist/apiCalls';
+import fetchData from '/dist/apiCalls';
 import Hotel from './classes/Hotel';
 import './images/woodedHotel.png';
-// Promise retrieval:
-let hotelData, roomFilter, customerRooms, customerBookings, reformatDate, thisCustomer, currentBooking;
+
+let hotelData, roomFilter, customerBookings, reformatDate, thisCustomer, currentBooking, idNum;
 
 function refreshData () {
    Promise.all([fetchData('customers'), fetchData('rooms'), fetchData('bookings')])
@@ -17,13 +17,13 @@ function refreshData () {
     return apiData
   })
   .then(allHotelData => {
-    console.log(allHotelData.rooms);
     hotelData = new Hotel(allHotelData);
     hotelData.retrieveHotelInfo(allHotelData);
+    console.log('hotelData after refresh and init', hotelData)
     return hotelData
   })
 }
-
+// function reFetchData()
   // Document Selectors //
   const loginView = document.querySelector('#loginWindow')
 
@@ -84,13 +84,11 @@ mainBucket.addEventListener('click', (event) => {
     resetFilter();
     toggleElements([browserView, bookRoomBtn])
     setTimeout(()=> {
-      renderCustomer();
       toggleElements([announceWords]);
-      toggleElements([savedBucket]);
-      toggleElements([savedBucket]);
-     }, 4000)
-   }
+    }, 4000)
+  }
 })
+
 
 userToggleBookingsBtn.addEventListener('click', () => {
   renderCustomer();
@@ -123,10 +121,9 @@ function checkThisDate (filter) {
 
 function renderCustomer() {
   refreshData();
-  rewardsWords.innerText = ''
-  let idNum = Number(userNameInput.value.split('customer')[1])
+  rewardsWords.innerText = '';
+  idNum = Number(userNameInput.value.split('customer')[1]);
   thisCustomer = hotelData.loginCustomer(idNum);
-  console.log(thisCustomer)
   rewardsWords.innerText = `Welcome back ${thisCustomer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty!`
   customerBookings = thisCustomer.bookings;
   renderTiles(customerBookings, defaultSavedView)
@@ -154,7 +151,6 @@ function renderTiles(array, element) {
       `
       <div class="room-card" id ="${item.roomNumber}">
       <span class="room-card-detail" id ="${item.roomNumber}">Room #${item.roomNumber}</span>
-      <span class="room-card-detail" id ="${item.roomNumber}">$${item.cost}</span>
       <span class="room-card-detail" id ="${item.number}">Booking ID:</span>
       <span class="room-card-detail" id ="${item.number}">${item.id}</span>
       </div>
@@ -210,4 +206,33 @@ function renderTiles(array, element) {
       checkedButton ? roomFilter = radioButton.id : null
     }
     roomFilter === 'all rooms' ? roomFilter = undefined : null;
+  }
+
+  function displayUserBookings(id) {
+    fetch(`http://localhost:3001/api/v1/bookings`)
+      .then(res => res.json())
+      .then(data => {
+        const userData = data.bookings.filter(booking => booking.userID == id);
+        renderTiles(userData, defaultSavedView);
+      });
+  }
+
+  function postRoomBooking(bookingObject) {
+    bookingObject['roomNumber'] = parseInt(bookingObject.roomNumber)
+    bookingObject['userID'] = parseInt(bookingObject.userID)
+    fetch('http://localhost:3001/api/v1/bookings', {
+      method: 'POST',
+      body: JSON.stringify(bookingObject),
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.message);
+      }
+      return response.json()
+    })
+    .then(json => {
+      displayUserBookings(bookingObject.userID)
+    })
+    .catch(error => console.log('Caught error:', error));
   }

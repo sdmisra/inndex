@@ -6,7 +6,6 @@ class Room {
     this.bedSize = roomData.bedSize;
     this.numBeds = roomData.numBeds;
     this.costPerNight = roomData.costPerNight;
-    // console.log('Made this Room just now:', this);
   }
 }
 
