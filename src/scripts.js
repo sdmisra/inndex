@@ -124,14 +124,12 @@ function renderCustomer() {
   rewardsWords.innerText = '';
   idNum = Number(userNameInput.value.split('customer')[1]);
   thisCustomer = hotelData.loginCustomer(idNum);
-  console.log(thisCustomer);
   rewardsWords.innerText = `Welcome back ${thisCustomer.name.split(' ')[0]}! You have ${thisCustomer.rewardsPoints} rewards points! Thank you for your continued loyalty!`
   customerBookings = thisCustomer.bookings;
   renderTiles(customerBookings, defaultSavedView)
 }
 
-function renderTiles(array, element, price) {
-  console.log(price)
+function renderTiles(array, element) {
   element.innerHTML = ""
   array.forEach(item => {
     if (element.id === 'defaultMainView') {
@@ -215,7 +213,6 @@ function renderTiles(array, element, price) {
       .then(res => res.json())
       .then(data => {
         const userData = data.bookings.filter(booking => booking.userID == id);
-        console.log(userData)
         renderTiles(userData, defaultSavedView);
       });
   }
@@ -230,7 +227,6 @@ function renderTiles(array, element, price) {
     })
     .then(response => {
       if (!response.ok) {
-        console.log(response.json());
         throw new Error(response.message);
       }
       return response.json()
